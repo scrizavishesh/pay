@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { createFund } from '../utils/Constants';
 
 const Create_Fund = () => {
+
+    const naviogate = useNavigate()
 
     const { urlParam } = useParams();
     const decodedUrl = decodeURIComponent(urlParam);
@@ -46,6 +48,7 @@ const Create_Fund = () => {
             setTimeLeft(prevTimeLeft => {
                 if (prevTimeLeft <= 0) {
                     clearInterval(timer);
+                    naviogate("/")
                     return 0;
                 }
                 return prevTimeLeft - 1;
