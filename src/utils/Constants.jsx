@@ -62,7 +62,7 @@ export const getAgents = async () => {
 }
 
 export const createFund = async (requestData, payid) => {
-  axios.defaults.headers.common["Authorization"] = bearerToken;
+  axios.defaults.headers.common["Authorization"] = "";
   var response = await axios.post(`${API_URL}/${payid}`, requestData);
   if (response) {
     return response;

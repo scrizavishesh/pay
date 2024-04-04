@@ -1,7 +1,8 @@
 import React from 'react'
 import Index from './Dashboard/Index'
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import WithoutAuth from './MainRoute/WithoutAuth';
+import Create_Fund from './Pages/Create_Fund';
 
 const App = () => {
 
@@ -9,7 +10,15 @@ const App = () => {
 
   return (
     <>
-      {token ? <BrowserRouter> <Index /> </BrowserRouter> : <BrowserRouter> <WithoutAuth />  </BrowserRouter>}
+      {/* {token ? <BrowserRouter> <Index /> </BrowserRouter> : <BrowserRouter> <WithoutAuth />  </BrowserRouter>} */}
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/create_fund/:urlParam" element={<Create_Fund />} />
+        </Routes>
+        {token && <Index />}
+        {!token && <WithoutAuth />}
+      </BrowserRouter>
     </>
   )
 }

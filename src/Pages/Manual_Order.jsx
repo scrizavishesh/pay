@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { createOrder, getAgents, getAllOrders } from '../utils/Constants';
 import { Link } from "react-router-dom";
-import Create_Fund from './Create_Fund';
+import clipboard from 'clipboard';
+
 
 const Manual_Order = () => {
 
 
 
     const [orderCreate, setcreateOrder] = useState([]);
-    const [showAgents, setShowAgents] = useState([])
+    const [showAgents, setShowAgents] = useState([]);
+    // const [Loader, setLoader] = useState(false)
     // console.log(orderCreate, "hello data");
 
     const [type, setType] = useState("");
@@ -25,6 +27,7 @@ const Manual_Order = () => {
 
     const CreateOrders = async (e) => {
         e.preventDefault();
+        // setLoader(true)
         if ((type !== "", agent !== "")) {
             const formData = new FormData();
             formData.append("type", type);
@@ -34,6 +37,7 @@ const Manual_Order = () => {
                 // console.log(response, "Login response");
                 if (response?.status === 201) {
                     window.location.reload();
+                    // setLoader(false)
                 }
             } catch (err) {
                 console.log(err)
@@ -49,11 +53,13 @@ const Manual_Order = () => {
 
 
     const getAllOrder = async () => {
+        // setLoader(true)
         try {
             const response = await getAllOrders();
             console.log(response, "orderResponse");
             if (response?.status === 200 && response?.data?.results !== null) {
                 setcreateOrder(response?.data?.results);
+                // setLoader(false)
             }
         } catch (err) {
             console.log(err)
@@ -61,11 +67,13 @@ const Manual_Order = () => {
     };
 
     const getAllAgents = async () => {
+        // setLoader(true)
         try {
             const response = await getAgents();
             // console.log(response, "Agents");
             if (response?.status === 200) {
                 setShowAgents(response?.data);
+                // setLoader(false)
             }
         } catch (err) {
             console.log(err)
@@ -73,9 +81,31 @@ const Manual_Order = () => {
     };
 
 
+    const [copied, setCopied] = useState(false);
+    const [copiedItemId, setCopiedItemId] = useState(null);
+
+
+
+    const copyToClipboard = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+        } catch (error) {
+            console.error('Failed to copy:', error);
+        }
+    };
+
+    const handleClick = (value , id) => {
+        const paymentUrl = `https://pay-full-in.vercel.app/${value}`
+        copyToClipboard(paymentUrl);
+        setCopiedItemId(id);
+    };
+
+
 
     return (
         <>
+            {/* {Loader && (<HashLoader />)} */}
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-12">
@@ -108,7 +138,7 @@ const Manual_Order = () => {
                                                 {orderCreate?.length !== 0 ? (
                                                     orderCreate?.map((provider) => {
                                                         return (
-                                                            <tr>
+                                                            <tr key={provider.order_id}>
                                                                 <div class="row">
                                                                     <div class="col-xxl-9 col-12 mb-5">
                                                                         <div class="card h-100">
@@ -161,7 +191,7 @@ const Manual_Order = () => {
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-start">
                                                                                     <p className='mx-2'>PAYMENT URL:</p>
-                                                                                    <Link to={`/create_fund/${encodeURIComponent(provider?.payment_url.slice(28))}`} class="link-primary">Click here to payment</Link>
+                                                                                    <a   onClick={(e) => handleClick(`create_fund/${encodeURIComponent(provider?.payment_url.slice(28))}`, provider.order_id)} class="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment url'}</a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>

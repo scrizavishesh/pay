@@ -63,7 +63,6 @@ const Login = () => {
                 // console.log(response, "Login Success response");
                 if (response?.status === 200) {
                     setSuccessLogin(response?.data?.users);
-                    
                     localStorage.setItem(
                         `data`, JSON.stringify(response?.data?.users)
                     );
