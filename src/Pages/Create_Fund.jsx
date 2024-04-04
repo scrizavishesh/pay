@@ -28,7 +28,7 @@ const Create_Fund = () => {
         formData.append("payment_amount", amount);
         try {
             const response = await createFund(formData, decodedUrl);
-            console.log(response, "Amount Response");
+            // console.log(response, "Amount Response");
             if (response?.status === 200) {
                 setActive(true);
                 setScannerData(response?.data);
@@ -83,7 +83,7 @@ const Create_Fund = () => {
             {
                 !Active ?
                     <main class="container d-flex flex-column">
-                        <div class="row align-items-center justify-content-center g-0 min-vh-100">
+                        <div class="row  justify-content-center g-0 min-vh-100">
                             <div class="col-12 col-md-8 col-lg-6 col-xxl-4 py-8 py-xl-0">
                                 <a href="#" class="form-check form-switch theme-switch btn btn-light btn-icon rounded-circle d-none ">
                                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
@@ -119,7 +119,7 @@ const Create_Fund = () => {
                     </main>
                     :
                     <main class="container d-flex flex-column">
-                        <div class="row align-items-center justify-content-center g-0 min-vh-100">
+                        <div class="row justify-content-center g-0 min-vh-100">
                             <div class="col-12 col-md-8 col-lg-6 col-xxl-4 py-8 py-xl-0">
                                 <a href="#" class="form-check form-switch theme-switch btn btn-light btn-icon rounded-circle d-none ">
                                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />

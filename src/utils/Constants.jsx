@@ -50,6 +50,17 @@ export const getAllOrders = async () => {
   }
 }
 
+
+export const getAgents = async () => {
+  axios.defaults.headers.common["Authorization"] = bearerToken;
+  var response = await axios.get(`${API_URL}/api/users/getalluser/`, );
+  if (response) {
+    return response;
+  } else {
+    return [];
+  }
+}
+
 export const createFund = async (requestData, payid) => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
   var response = await axios.post(`${API_URL}/${payid}`, requestData);

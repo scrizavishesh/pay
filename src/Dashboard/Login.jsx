@@ -8,7 +8,7 @@ const Login = () => {
 
     const [tokenData, settokenData] = useState("");
     const [SuccessLogin, setSuccessLogin] = useState("")
-    console.log(tokenData, "data")
+    // console.log(tokenData, "data"); 
 
     const [username, setUsernamer] = useState("");
     const [userNameValidError, setUserNameValidError] = useState(false);
@@ -60,7 +60,7 @@ const Login = () => {
     const userSuccess = async (tokenData) => {
             try {
                 const response = await LoginSuccess(tokenData);
-                console.log(response, "Login Success response");
+                // console.log(response, "Login Success response");
                 if (response?.status === 200) {
                     setSuccessLogin(response?.data?.users);
                     
@@ -91,7 +91,7 @@ const Login = () => {
             formData.append("password", password);
             try {
                 const response = await Loginuse(formData);
-                console.log(response, "Login response");
+                // console.log(response, "Login response");
                 if (response?.status === 200) {
                     settokenData(response?.data?.token);
                     localStorage.setItem(

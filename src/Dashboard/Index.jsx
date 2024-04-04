@@ -7,7 +7,7 @@ import PageRouter from '../MainRoute/PageRouter';
 const Index = () => {
 
     const profile = JSON.parse(localStorage.getItem("data"));
-    console.log(profile[0].username)
+    // console.log(profile[0].username)
 
 
     const [isSidebarOpen, setSidebarOpen] = useState(true);

@@ -1,7 +1,7 @@
 import React from 'react'
 import Index from './Dashboard/Index'
 import { BrowserRouter } from 'react-router-dom';
-import Login from './Dashboard/Login';
+import WithoutAuth from './MainRoute/WithoutAuth';
 
 const App = () => {
 
@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <>
-      {token ? <BrowserRouter> <Index /> </BrowserRouter> : <BrowserRouter> <Login />  </BrowserRouter>}
+      {token ? <BrowserRouter> <Index /> </BrowserRouter> : <BrowserRouter> <WithoutAuth />  </BrowserRouter>}
     </>
   )
 }

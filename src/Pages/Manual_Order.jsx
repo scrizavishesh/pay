@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { createOrder, getAllOrders } from '../utils/Constants';
+import { createOrder, getAgents, getAllOrders } from '../utils/Constants';
 import { Link } from "react-router-dom";
 import Create_Fund from './Create_Fund';
 
@@ -7,8 +7,9 @@ const Manual_Order = () => {
 
 
 
-    const [orderCreate, setcreateOrder] = useState([])
-    console.log(orderCreate, "hello data");
+    const [orderCreate, setcreateOrder] = useState([]);
+    const [showAgents, setShowAgents] = useState([])
+    // console.log(orderCreate, "hello data");
 
     const [type, setType] = useState("");
     const [agent, setAgent] = useState("");
@@ -30,9 +31,9 @@ const Manual_Order = () => {
             formData.append("agent", agent);
             try {
                 const response = await createOrder(formData);
-                console.log(response, "Login response");
-                if (response?.status === 200) {
-                    // setcreateOrder(response?.data);
+                // console.log(response, "Login response");
+                if (response?.status === 201) {
+                    window.location.reload();
                 }
             } catch (err) {
                 console.log(err)
@@ -43,6 +44,7 @@ const Manual_Order = () => {
 
     useEffect(() => {
         getAllOrder();
+        getAllAgents();
     }, [])
 
 
@@ -50,16 +52,27 @@ const Manual_Order = () => {
         try {
             const response = await getAllOrders();
             console.log(response, "orderResponse");
-            if (response?.status === 200) {
-                setcreateOrder(response?.data);
+            if (response?.status === 200 && response?.data?.results !== null) {
+                setcreateOrder(response?.data?.results);
             }
         } catch (err) {
             console.log(err)
         }
-
     };
 
- 
+    const getAllAgents = async () => {
+        try {
+            const response = await getAgents();
+            // console.log(response, "Agents");
+            if (response?.status === 200) {
+                setShowAgents(response?.data);
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+
 
     return (
         <>
@@ -68,8 +81,7 @@ const Manual_Order = () => {
                     <div class="col-lg-12 col-md-12 col-12">
                         {/* <!-- Page header --> */}
                         <div class="mb-5">
-                            <h3 class="mb-0 ">Customers</h3>
-
+                            <h3 class="mb-0 ">Manual Orders</h3>
                         </div>
                     </div>
                 </div>
@@ -149,7 +161,7 @@ const Manual_Order = () => {
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-start">
                                                                                     <p className='mx-2'>PAYMENT URL:</p>
-                                                                                    <Link to={`/create_fund/${encodeURIComponent(provider?.payment_url.slice(28))}`}  class="link-primary">Click here to payment</Link>
+                                                                                    <Link to={`/create_fund/${encodeURIComponent(provider?.payment_url.slice(28))}`} class="link-primary">Click here to payment</Link>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -227,9 +239,19 @@ const Manual_Order = () => {
                                     </div>
                                     <div class="mb-3">
                                         <label for="customerEmail" class="form-label">Agent *</label>
-                                        <select onChange={(e) => handleAgent(e.target.value)} class="form-select" aria-label="Default select example">
-                                            <option selected>Open this select menu</option>
-                                            <option value="11">Demo</option>
+                                        <select onChange={(e) => handleAgent(e.target.value)} className="form-select" aria-label="Default select example">
+                                            <option defaultValue>Open this select menu</option>
+                                            {showAgents?.length !== 0 ? (
+                                                showAgents.map((provider) => {
+                                                    return (
+                                                        provider.is_agent ? (
+                                                            <option key={provider.id} value={provider.id}>{provider.username}</option>
+                                                        ) : null
+                                                    );
+                                                })
+                                            ) : (
+                                                <option disabled>No data found</option>
+                                            )}
                                         </select>
                                     </div>
                                     <div class="text-end d-flex justify-content-between mt-2">
