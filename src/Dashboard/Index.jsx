@@ -6,6 +6,10 @@ import PageRouter from '../MainRoute/PageRouter';
 
 const Index = () => {
 
+    const profile = JSON.parse(localStorage.getItem("data"));
+    console.log(profile[0].username)
+
+
     const [isSidebarOpen, setSidebarOpen] = useState(true);
     // const [isActive, setIsActive] = useState(false);
 
@@ -71,7 +75,7 @@ const Index = () => {
                                             <img alt="avatar" src="./ProfileImage.png" class="rounded-circle" />
                                         </div>
                                         <div>
-                                            <h6 style={{marginTop: "0.7rem"}}>Vishesh Tomer</h6>
+                                            <h6 style={{marginTop: "0.7rem"}}>{profile[0].username}</h6>
                                         </div>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
@@ -79,7 +83,7 @@ const Index = () => {
 
 
                                             <div class="lh-1 ">
-                                                <h5 class="mb-1"> Vishesh Tomer </h5>
+                                                <h5 class="mb-1"> {profile[0].username}</h5>
                                                 <a href="#!" class="text-inherit fs-6">View my profile</a>
                                             </div>
                                             <div class=" dropdown-divider mt-3 mb-2"></div>
