@@ -66,6 +66,7 @@ const Login = () => {
                     localStorage.setItem(
                         `data`, JSON.stringify(response?.data?.users)
                     );
+                    navigate("/dashboard")
                     window.location.reload();
                 }
             } catch (err) {

@@ -17,7 +17,7 @@ const PageRouter = () => {
     <>
       <Container>
         <Routes>
-          <Route path="/" element={<DashboardMain />} />
+          <Route path="/dashboard" element={<DashboardMain />} />
           <Route path="/manual_order" element={<Manual_Order />} />
           {/* <Route path="/create_fund/:urlParam" element={<Create_Fund />} /> */}
           {/* <Route path="/pay" element={<Scanner_page />} /> */}

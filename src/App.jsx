@@ -10,14 +10,12 @@ const App = () => {
 
   return (
     <>
-      {/* {token ? <BrowserRouter> <Index /> </BrowserRouter> : <BrowserRouter> <WithoutAuth />  </BrowserRouter>} */}
-
       <BrowserRouter>
         <Routes>
           <Route path="/create_fund/:urlParam" element={<Create_Fund />} />
+          {!token && <Route path="/" element={<Login />} />}
         </Routes>
         {token && <Index />}
-        {!token && <Login />}
       </BrowserRouter>
     </>
   )
