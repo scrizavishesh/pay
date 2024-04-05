@@ -52,7 +52,7 @@ const Manual_Order = () => {
 
     const handleClick = (order_id, receipt, agent) => {
         console.log(order_id, "orderid", receipt, "recepit", agent, "agemnt")
-        const paymentUrl = `https://upicollect.com/create_fund/${order_id}/${receipt}/${agent}`;
+        const paymentUrl = `https://pay-full-in.vercel.app/create_fund/${order_id}/${receipt}/${agent}`;
         copyToClipboard(paymentUrl);
         setCopiedItemId(order_id);
     };
