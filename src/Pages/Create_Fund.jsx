@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { createFund } from '../utils/Constants';
 
 const Create_Fund = () => {
-    const { urlParam } = useParams();
-    const decodedUrl = decodeURIComponent(urlParam);
+    const { order_id, receipt, agent } = useParams();
+    console.log(order_id, "ord", receipt, "res", agent, "id")
     const [active, setActive] = useState(false);
     const [scannerData, setScannerData] = useState('');
     const [timeLeft, setTimeLeft] = useState(180);
@@ -21,7 +21,7 @@ const Create_Fund = () => {
         const formData = new FormData();
         formData.append('payment_amount', amount);
         try {
-            const response = await createFund(formData, decodedUrl);
+            const response = await createFund(formData, order_id, receipt, agent);
             if (response?.status === 200) {
                 setActive(true);
                 setScannerData(response?.data);

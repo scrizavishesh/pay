@@ -58,9 +58,20 @@ export const getAgents = async () => {
   }
 }
 
-export const createFund = async (requestData, payid) => {
+export const createFund = async (requestData, orderId, recId, id) => {
   axios.defaults.headers.common["Authorization"] = "";
-  var response = await axios.post(`${API_URL}/${payid}`, requestData);
+  var response = await axios.post(`${API_URL}/api/payments/create?order_id=${orderId}&receipt_id=${recId}&id=${id}`, requestData);
+  if (response) {
+    return response;
+  } else {
+    return [];
+  }
+}
+
+
+export const getDashboardStatistic = async () => {
+  axios.defaults.headers.common["Authorization"] = bearerToken;
+  var response = await axios.get(`${API_URL}/api/statistics/payin/`, );
   if (response) {
     return response;
   } else {

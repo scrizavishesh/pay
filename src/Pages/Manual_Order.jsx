@@ -50,10 +50,11 @@ const Manual_Order = () => {
         }
     };
 
-    const handleClick = (value, id) => {
-        const paymentUrl = `http://localhost:5173/${value}`;
+    const handleClick = (order_id, receipt, agent) => {
+        console.log(order_id, "orderid", receipt, "recepit", agent, "agemnt")
+        const paymentUrl = `https://upicollect.com/create_fund/${order_id}/${receipt}/${agent}`;
         copyToClipboard(paymentUrl);
-        setCopiedItemId(id);
+        setCopiedItemId(order_id);
     };
 
     return (
@@ -138,7 +139,7 @@ const Manual_Order = () => {
                                                                         </div>
                                                                         <div class="d-flex justify-content-start">
                                                                             <p className='mx-2'>PAYMENT URL:</p>
-                                                                            <a type='button' onClick={(e) => handleClick(`create_fund/${encodeURIComponent(provider?.payment_url.slice(28))}`, provider.order_id)} class="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment url'}</a>
+                                                                            <a type='button' onClick={(e) => handleClick(provider?.order_id, provider?.receipt, provider?.agent)} className="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment URL'}</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
