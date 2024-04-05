@@ -1,292 +1,224 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import { createOrder, getAgents, getAllOrders } from '../utils/Constants';
-import { Link } from "react-router-dom";
-import clipboard from 'clipboard';
-
 
 const Manual_Order = () => {
-
-
-
-    const [orderCreate, setcreateOrder] = useState([]);
+    const [orderCreate, setCreateOrder] = useState([]);
     const [showAgents, setShowAgents] = useState([]);
-    // const [Loader, setLoader] = useState(false)
-    // console.log(orderCreate, "hello data");
+    const [type, setType] = useState('');
+    const [agent, setAgent] = useState('');
+    const [copiedItemId, setCopiedItemId] = useState(null);
 
-    const [type, setType] = useState("");
-    const [agent, setAgent] = useState("");
-
-    const handleType = (value) => {
-        setType(value);
-    }
-
-    const handleAgent = (value) => {
-        setAgent(value);
-    }
-
+    const handleType = (value) => setType(value);
+    const handleAgent = (value) => setAgent(value);
 
     const CreateOrders = async (e) => {
         e.preventDefault();
-        // setLoader(true)
-        if ((type !== "", agent !== "")) {
+        if (type && agent) {
             const formData = new FormData();
-            formData.append("type", type);
-            formData.append("agent", agent);
+            formData.append('type', type);
+            formData.append('agent', agent);
             try {
                 const response = await createOrder(formData);
-                // console.log(response, "Login response");
-                if (response?.status === 201) {
-                    window.location.reload();
-                    // setLoader(false)
-                }
+                if (response?.status === 201) window.location.reload();
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
         }
-
     };
 
     useEffect(() => {
-        getAllOrder();
-        getAllAgents();
-    }, [])
+        const fetchData = async () => {
+            try {
+                const orderResponse = await getAllOrders();
+                if (orderResponse?.status === 200 && orderResponse?.data?.results)
+                    setCreateOrder(orderResponse.data.results);
 
-
-    const getAllOrder = async () => {
-        // setLoader(true)
-        try {
-            const response = await getAllOrders();
-            console.log(response, "orderResponse");
-            if (response?.status === 200 && response?.data?.results !== null) {
-                setcreateOrder(response?.data?.results);
-                // setLoader(false)
+                const agentsResponse = await getAgents();
+                if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
+            } catch (err) {
+                console.log(err);
             }
-        } catch (err) {
-            console.log(err)
-        }
-    };
-
-    const getAllAgents = async () => {
-        // setLoader(true)
-        try {
-            const response = await getAgents();
-            // console.log(response, "Agents");
-            if (response?.status === 200) {
-                setShowAgents(response?.data);
-                // setLoader(false)
-            }
-        } catch (err) {
-            console.log(err)
-        }
-    };
-
-
-    const [copied, setCopied] = useState(false);
-    const [copiedItemId, setCopiedItemId] = useState(null);
-
-
+        };
+        fetchData();
+    }, []);
 
     const copyToClipboard = async (text) => {
         try {
             await navigator.clipboard.writeText(text);
-            setCopied(true);
         } catch (error) {
             console.error('Failed to copy:', error);
         }
     };
 
-    const handleClick = (value , id) => {
-        const paymentUrl = `https://pay-full-in.vercel.app/${value}`
+    const handleClick = (value, id) => {
+        const paymentUrl = `http://localhost:5173/${value}`;
         copyToClipboard(paymentUrl);
         setCopiedItemId(id);
     };
 
-
-
     return (
         <>
-            {/* {Loader && (<HashLoader />)} */}
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-12">
-                        {/* <!-- Page header --> */}
-                        <div class="mb-5">
-                            <h3 class="mb-0 ">Manual Orders</h3>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-lg-12 col-md-12 col-12">
+                        <div className="mb-5">
+                            <h3 className="mb-0">Manual Orders</h3>
                         </div>
                     </div>
                 </div>
-                <div>
-                    {/* <!-- row --> */}
-                    <div class="row">
-                        <div class="col-12">
-                            {/* <!-- card --> */}
-                            <div class="card mb-4">
-                                <div class="card-header  ">
-                                    <div class="row justify-content-end">
-                                        <div class=" col-lg-4 col-md-4">
-                                            <input type="search" class="form-control " placeholder="Search for customer, email, phone, status or something" />
-                                        </div>
-                                        <div class="col-md-2 mb-3">
-                                            <a type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Create Order</a>
-                                        </div>
+                <div className="row">
+                    <div className="col-12">
+                        <div className="card mb-4">
+                            <div className="card-header">
+                                <div className="row justify-content-end">
+                                    <div className="col-lg-4 col-md-4">
+                                        <input type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
+                                    </div>
+                                    <div className="col-md-2 mb-3">
+                                        <a className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Create Order</a>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="table-responsive table-card">
-                                        <table class="table text-nowrap mb-0 table-centered table-hover">
-                                            <tbody>
-                                                {orderCreate?.length !== 0 ? (
-                                                    orderCreate?.map((provider) => {
-                                                        return (
-                                                            <tr key={provider.order_id}>
-                                                                <div class="row">
-                                                                    <div class="col-xxl-9 col-12 mb-5">
-                                                                        <div class="card h-100">
-                                                                            <div class="card-body">
-                                                                                <div class='d-flex justify-content-between flex-wrap'>
-                                                                                    <div class="d-flex flex-column">
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>TYPE:</p>
-                                                                                            <h5>{provider?.type}</h5>
-                                                                                        </div>
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>RECEIPT:</p>
-                                                                                            <h5>{provider?.receipt}</h5>
-                                                                                        </div>
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>CLIENT NAME:</p>
-                                                                                            <h5>{provider?.client_name}</h5>
-                                                                                        </div>
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>CREATED AT:</p>
-                                                                                            <h5>{provider?.created_at}</h5>
-                                                                                        </div>
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>APPROVED AT:</p>
-                                                                                            <h5>{provider?.approved_at}</h5>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="d-flex flex-column">
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>ORDER ID:</p>
-                                                                                            <h5>{provider?.order_id}</h5>
-                                                                                        </div>
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>CLIENT UPI:</p>
-                                                                                            <h5>{provider?.upi}</h5>
-                                                                                        </div>
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>UTR:</p>
-                                                                                            <h5>{provider?.utr}</h5>
-                                                                                        </div>
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>CUSTOMER UTR:</p>
-                                                                                            <h5>{provider?.customer_utr}</h5>
-                                                                                        </div>
-                                                                                        <div class="d-flex justify-content-start">
-                                                                                            <p className='mx-2'>WEBSITE:</p>
-                                                                                            <h5>{provider?.website}</h5>
-                                                                                        </div>
-                                                                                    </div>
+                            </div>
+                            <div className="card-body">
+                                <div className="table-responsive table-card">
+                                    <table className="table text-nowrap mb-0 table-centered table-hover">
+                                        <tbody>
+                                            {orderCreate?.length !== 0 ? (
+                                                orderCreate?.map((provider) => (
+                                                    <tr key={provider.order_id}>
+                                                        <div className="row">
+                                                            <div className="col-xxl-9 col-12 mb-5">
+                                                                <div className="card h-100">
+                                                                    <div class="card-body">
+                                                                        <div class='d-flex justify-content-between flex-wrap'>
+                                                                            <div class="d-flex flex-column">
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>TYPE:</p>
+                                                                                    <h5>{provider?.type}</h5>
                                                                                 </div>
                                                                                 <div class="d-flex justify-content-start">
-                                                                                    <p className='mx-2'>PAYMENT URL:</p>
-                                                                                    <a   onClick={(e) => handleClick(`create_fund/${encodeURIComponent(provider?.payment_url.slice(28))}`, provider.order_id)} class="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment url'}</a>
+                                                                                    <p className='mx-2'>RECEIPT:</p>
+                                                                                    <h5>{provider?.receipt}</h5>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>CLIENT NAME:</p>
+                                                                                    <h5>{provider?.client_name}</h5>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>CREATED AT:</p>
+                                                                                    <h5>{provider?.created_at}</h5>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>APPROVED AT:</p>
+                                                                                    <h5>{provider?.approved_at}</h5>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="d-flex flex-column">
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>ORDER ID:</p>
+                                                                                    <h5>{provider?.order_id}</h5>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>CLIENT UPI:</p>
+                                                                                    <h5>{provider?.upi}</h5>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>UTR:</p>
+                                                                                    <h5>{provider?.utr}</h5>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>CUSTOMER UTR:</p>
+                                                                                    <h5>{provider?.customer_utr}</h5>
+                                                                                </div>
+                                                                                <div class="d-flex justify-content-start">
+                                                                                    <p className='mx-2'>WEBSITE:</p>
+                                                                                    <h5>{provider?.website}</h5>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="col-xxl-3 col-12 mb-5">
-                                                                        <div class="card h-100">
-                                                                            <div class="card-body d-flex justify-content-center align-items-center">
-                                                                                <div class="text-center">
-                                                                                    <span className={`badge ${provider?.approval_status === "APPROVED" ? 'badge-success-soft' :
-                                                                                        (provider?.approval_status === "PENDING" ? 'badge-warning-soft' : 'badge-danger-soft'
-                                                                                        )}`}>
-                                                                                        {provider?.approval_status}
-                                                                                    </span>
-
-                                                                                    <h5>{provider?.payment_amount}</h5>
-                                                                                </div>
-                                                                            </div>
+                                                                        <div class="d-flex justify-content-start">
+                                                                            <p className='mx-2'>PAYMENT URL:</p>
+                                                                            <a type='button' onClick={(e) => handleClick(`create_fund/${encodeURIComponent(provider?.payment_url.slice(28))}`, provider.order_id)} class="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment url'}</a>
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
-                                                            </tr>
-                                                        );
-                                                    })
-                                                ) : (
-                                                    <tr>
-                                                        <td style={{ textAlign: "center" }} colSpan={6}>
-                                                            No data found
-                                                        </td>
+                                                            </div>
+                                                            <div className="col-xxl-3 col-12 mb-5">
+                                                                <div className="card h-100">
+                                                                    <div className="card-body d-flex justify-content-center align-items-center">
+                                                                        <div className="text-center">
+                                                                            <span className={`badge ${provider?.approval_status === 'APPROVED' ? 'badge-success-soft' : (provider?.approval_status === 'PENDING' ? 'badge-warning-soft' : 'badge-danger-soft')}`}>
+                                                                                {provider?.approval_status}
+                                                                            </span>
+                                                                            <h5>{provider?.payment_amount}</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </tr>
-                                                )}
-
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td style={{ textAlign: 'center' }} colSpan={6}>No data found</td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="card-footer d-md-flex justify-content-between align-items-center">
-                                    <span>Showing 1 to 8 of 12 entries</span>
-                                    <nav class="mt-2 mt-md-0">
-                                        <ul class="pagination mb-0 ">
-                                            <li class="page-item "><a class="page-link" href="#!">Previous</a></li>
-                                            <li class="page-item active"><a class="page-link" href="#!">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                        </ul>
-                                    </nav>
-                                </div>
-
+                            </div>
+                            <div className="card-footer d-md-flex justify-content-between align-items-center">
+                                <span>Showing 1 to 8 of 12 entries</span>
+                                <nav className="mt-2 mt-md-0">
+                                    <ul className="pagination mb-0">
+                                        <li className="page-item"><a className="page-link" href="#!">Previous</a></li>
+                                        <li className="page-item active"><a className="page-link" href="#!">1</a></li>
+                                        <li className="page-item"><a className="page-link" href="#!">2</a></li>
+                                        <li className="page-item"><a className="page-link" href="#!">3</a></li>
+                                        <li className="page-item"><a className="page-link" href="#!">Next</a></li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Create Order</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Create Order</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+                        <div className="modal-body">
                             <form>
                                 <div>
-                                    <div class="mb-3">
-                                        <label for="customerName" class="form-label">Type *</label>
-                                        <select onChange={(e) => handleType(e.target.value)} class="form-select" aria-label="Default select example">
+                                    <div className="mb-3">
+                                        <label htmlFor="customerName" className="form-label">Type *</label>
+                                        <select onChange={(e) => handleType(e.target.value)} className="form-select" aria-label="Default select example">
                                             <option selected>Open this select menu</option>
                                             <option value="PAYIN">PAYIN</option>
                                             <option value="PAYOUT">PAYOUT</option>
                                             <option value="PAYOUT LINK">PAYOUT LINK</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="customerEmail" class="form-label">Agent *</label>
+                                    <div className="mb-3">
+                                        <label htmlFor="customerEmail" className="form-label">Agent *</label>
                                         <select onChange={(e) => handleAgent(e.target.value)} className="form-select" aria-label="Default select example">
                                             <option defaultValue>Open this select menu</option>
                                             {showAgents?.length !== 0 ? (
-                                                showAgents.map((provider) => {
-                                                    return (
-                                                        provider.is_agent ? (
-                                                            <option key={provider.id} value={provider.id}>{provider.username}</option>
-                                                        ) : null
-                                                    );
-                                                })
+                                                showAgents.map((provider) => (
+                                                    provider.is_agent ? (<option key={provider.id} value={provider.id}>{provider.username}</option>) : null
+                                                ))
                                             ) : (
                                                 <option disabled>No data found</option>
                                             )}
                                         </select>
                                     </div>
-                                    <div class="text-end d-flex justify-content-between mt-2">
-                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                        <button onClick={CreateOrders} type="button" class="btn btn-primary me-1">+ Create</button>
+                                    <div className="text-end d-flex justify-content-between mt-2">
+                                        <button type="button" className="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                        <button onClick={CreateOrders} type="button" className="btn btn-primary me-1">+ Create</button>
                                     </div>
                                 </div>
                             </form>
@@ -295,7 +227,7 @@ const Manual_Order = () => {
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Manual_Order
+export default Manual_Order;

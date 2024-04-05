@@ -2,10 +2,7 @@ import axios from "axios";
 
 export const API_URL = "https://auth.upicollect.com";
 
-// const bearerToken = JSON.parse(localStorage.getItem("HRMS token"));
 var bearerToken = `Token ${localStorage.getItem("token")}`
-// var bearerToken = `Bearer 30|vD2mT6OIa1Iu7kGYkeFTMLHiICEvpRpRNZnJ8OXZe3263e80`
-// console.log(bearerToken, "Token")
 
 
 export const Loginuse = async (requestData) => {
