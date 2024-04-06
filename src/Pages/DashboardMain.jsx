@@ -1,12 +1,25 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { getDashboardStatistic } from '../utils/Constants';
+import toast from 'react-hot-toast';
 
 const DashboardMain = () => {
 
+  const navigate = useNavigate();
+
   const [Statics, setStatics] = useState([]);
-  console.log(Statics)
+  console.log(Statics);
+
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
+    if (!token) {
+      toast.error(
+        "your session has been expired ...kindly login again.",
+        "yellow"
+      );
+      navigate(`/`);
+    }
     const DashData = async () => {
       try {
         const dashResponse = await getDashboardStatistic();
@@ -94,7 +107,7 @@ const DashboardMain = () => {
                       </div>
                       <div class="icon-shape icon-lg bg-success-soft text-success rounded-3">
                         {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity icon-sm"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity icon-sm"><path d="M4.01 6.01h16v2h-16zm2-4h12v2h-12zM20 10H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2m-9.7 10L7 16.76l1.4-1.4l1.9 1.9l5.3-5.3l1.4 1.4Z"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity icon-sm"><path d="M4.01 6.01h16v2h-16zm2-4h12v2h-12zM20 10H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2m-9.7 10L7 16.76l1.4-1.4l1.9 1.9l5.3-5.3l1.4 1.4Z" /></svg>
                       </div>
                     </div>
                   </div>
@@ -109,7 +122,7 @@ const DashboardMain = () => {
                       </div>
                       <div class="icon-shape icon-lg bg-warning text-success rounded-3">
                         {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity icon-sm"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity icon-sm"><path d="M7 13.5q.625 0 1.063-.437T8.5 12q0-.625-.437-1.062T7 10.5q-.625 0-1.062.438T5.5 12q0 .625.438 1.063T7 13.5m5 0q.625 0 1.063-.437T13.5 12q0-.625-.437-1.062T12 10.5q-.625 0-1.062.438T10.5 12q0 .625.438 1.063T12 13.5m5 0q.625 0 1.063-.437T18.5 12q0-.625-.437-1.062T17 10.5q-.625 0-1.062.438T15.5 12q0 .625.438 1.063T17 13.5M12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity icon-sm"><path d="M7 13.5q.625 0 1.063-.437T8.5 12q0-.625-.437-1.062T7 10.5q-.625 0-1.062.438T5.5 12q0 .625.438 1.063T7 13.5m5 0q.625 0 1.063-.437T13.5 12q0-.625-.437-1.062T12 10.5q-.625 0-1.062.438T10.5 12q0 .625.438 1.063T12 13.5m5 0q.625 0 1.063-.437T18.5 12q0-.625-.437-1.062T17 10.5q-.625 0-1.062.438T15.5 12q0 .625.438 1.063T17 13.5M12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22" /></svg>
                       </div>
                     </div>
                   </div>
@@ -126,7 +139,7 @@ const DashboardMain = () => {
                       </div>
                       <div class="icon-shape icon-lg bg-danger-soft text-success rounded-3">
                         {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity icon-sm"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="1.8rem" height="1.8rem" viewBox="0 0 48 48"><path fill="#d50000" d="M24 6C14.1 6 6 14.1 6 24s8.1 18 18 18s18-8.1 18-18S33.9 6 24 6m0 4c3.1 0 6 1.1 8.4 2.8L12.8 32.4C11.1 30 10 27.1 10 24c0-7.7 6.3-14 14-14m0 28c-3.1 0-6-1.1-8.4-2.8l19.6-19.6C36.9 18 38 20.9 38 24c0 7.7-6.3 14-14 14"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1.8rem" height="1.8rem" viewBox="0 0 48 48"><path fill="#d50000" d="M24 6C14.1 6 6 14.1 6 24s8.1 18 18 18s18-8.1 18-18S33.9 6 24 6m0 4c3.1 0 6 1.1 8.4 2.8L12.8 32.4C11.1 30 10 27.1 10 24c0-7.7 6.3-14 14-14m0 28c-3.1 0-6-1.1-8.4-2.8l19.6-19.6C36.9 18 38 20.9 38 24c0 7.7-6.3 14-14 14" /></svg>
                       </div>
                     </div>
                   </div>

@@ -52,16 +52,41 @@ const Create_Fund = () => {
     }, [timeLeft]);
 
     const handleGooglePay = () => {
-        window.location.href = `https://pay.google.com/gp/v/gpc?amount=${amount}`;
-    };
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            window.location.href = `upi://pay?pa=yourupiaddress@bank&pn=RecipientName&tn=PaymentDescription&am=${amount}&cu=INR`;
+        } else {
+            window.location.href = `https://pay.google.com/gp/v/gpc?amount=${amount}`;
+        }
+    }
 
     const handlePhonePay = () => {
-        window.location.href = `phonepe://pay?amount=${amount}`;
-    };
-
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            // If the user is on a mobile device, redirect to PhonePe app
+            window.location.href = `phonepe://pay?amount=${amount}`;
+        } else {
+            // If the user is not on a mobile device, you can provide a fallback action like displaying a message
+            alert("PhonePe app is required for UPI payments on mobile devices.");
+        }
+    }
+    
     const handlePaytmPay = () => {
-        window.location.href = `paytm://payment?amount=${amount}`;
-    };
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            // If the user is on a mobile device, redirect to Paytm app
+            window.location.href = `paytm://payment?amount=${amount}`;
+        } else {
+            // If the user is not on a mobile device, redirect to Paytm website or provide a fallback action
+            window.location.href = `https://paytm.com/`;
+        }
+    }
+    
+
+    // const handlePhonePay = () => {
+    //     window.location.href = `upi://pay?pa=phonepe@ybl&pn=PhonePe&am=${amount}&cu=INR`;
+    // };
+
+    // const handlePaytmPay = () => {
+    //     window.location.href = `upi://pay?pa=paytm@icici&pn=Paytm&mc=123&tid=12345&tr=${Math.floor(Math.random() * 100000)}&tn=Payment&am=${amount}&cu=INR`;
+    // };
 
     return (
         <>

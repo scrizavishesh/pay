@@ -1,12 +1,23 @@
 import { Icon } from '@iconify/react';
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 // import Header from '../Layouts/Header'
 import Sidebar from '../Layouts/Sidebar'
 import PageRouter from '../MainRoute/PageRouter';
 
 const Index = () => {
+    const navigate = useNavigate();
 
     const profile = JSON.parse(localStorage.getItem("data"));
+
+
+    const Logout = async () => {
+        localStorage.removeItem("token")
+        navigate("/")
+        window.location.reload();
+
+    }
+
     // console.log(profile[0].username)
 
 
@@ -75,7 +86,7 @@ const Index = () => {
                                             <img alt="avatar" src="./ProfileImage.png" class="rounded-circle" />
                                         </div>
                                         <div>
-                                            <h6 style={{marginTop: "0.7rem"}}>{profile[0].username}</h6>
+                                            <h6 style={{ marginTop: "0.7rem" }}>{profile[0].username}</h6>
                                         </div>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
@@ -91,7 +102,7 @@ const Index = () => {
 
                                         <ul class="list-unstyled">
                                             <li>
-                                                <a class="dropdown-item" href="./index.html">
+                                                <a type='button' onClick={Logout} class="dropdown-item">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power me-2 icon-xxs dropdown-item-icon"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>Sign Out
                                                 </a>
                                             </li>

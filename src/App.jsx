@@ -1,25 +1,28 @@
 import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Index from './Dashboard/Index'
-import WithoutAuth from './MainRoute/WithoutAuth'
+import Login from './Dashboard/Login'
+import Create_Fund from './Pages/Create_Fund'
 
 const App = () => {
 
   const token = localStorage.getItem("token");
   return (
-    <>
-      { token ?
-        <BrowserRouter>
-        <Index />
-      </BrowserRouter>
-      :
-      <BrowserRouter>
-        <WithoutAuth />
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/create_fund/:order_id/:receipt/:agent" element={<Create_Fund />} />
+      </Routes>
+      {
+        token ?
+          <Index /> :
+          <Routes>
+            <Route path="/" element={<Login />} />
+          </Routes>
       }
-    </>
+
+    </BrowserRouter>
   )
 }
 
-export default App
+export default App;
 

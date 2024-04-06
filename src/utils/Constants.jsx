@@ -80,3 +80,28 @@ export const getDashboardStatistic = async () => {
 }
 
 
+export const Orderapproval = async (requestData, id, orderId) => {
+  axios.defaults.headers.common["Authorization"] = bearerToken;
+  var response = await axios.post(`${API_URL}/api/orders/agent/${id}/${orderId}/`, requestData);
+  if (response) {
+    return response;
+  } else {
+    return [];
+  }
+}
+
+
+export const getAgentOrders = async (id) => {
+  axios.defaults.headers.common["Authorization"] = bearerToken;
+  var response = await axios.get(`${API_URL}/api/orders/agent/${id}`, );
+  if (response) {
+    return response;
+  } else {
+    return [];
+  }
+}
+
+
+
+
+

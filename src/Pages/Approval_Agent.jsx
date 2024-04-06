@@ -1,32 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { createOrder, getAgents, getAllOrders } from '../utils/Constants';
+import { createOrder, getAgentOrders, getAgents, getAllOrders, Orderapproval } from '../utils/Constants';
 import toast from 'react-hot-toast';
 
-const Manual_Order = () => {
+const Approval_Agent = () => {
     const token = localStorage.getItem("token");
+    const profile = JSON.parse(localStorage.getItem("data"));
+
+
     const [orderCreate, setCreateOrder] = useState([]);
-    const [showAgents, setShowAgents] = useState([]);
-    const [type, setType] = useState('');
-    const [agent, setAgent] = useState('');
     const [copiedItemId, setCopiedItemId] = useState(null);
 
-    const handleType = (value) => setType(value);
-    const handleAgent = (value) => setAgent(value);
+    useEffect(() => {
+        fetchData();
+    }, []);
 
-    const CreateOrders = async (e) => {
-        e.preventDefault();
-        if (type && agent) {
-            const formData = new FormData();
-            formData.append('type', type);
-            formData.append('agent', agent);
-            try {
-                const response = await createOrder(formData);
-                if (response?.status === 201) window.location.reload();
-            } catch (err) {
-                console.log(err);
-            }
+    const fetchData = async () => {
+        try {
+            const orderResponse = await getAgentOrders(profile[0]?.id);
+            console.log(orderResponse)
+            if (orderResponse?.status === 200 && orderResponse?.data?.results)
+                setCreateOrder(orderResponse.data.results);
+        } catch (err) {
+            console.log(err);
         }
     };
+
+
+    const ApprovedOrders = async (order_id, agent) => {
+        const formData = new FormData();
+        formData.append('utr', '1234567890');
+        formData.append("approval_status", "APPROVED");
+        formData.append("remark", "Payment verified and approved.");
+        try {
+            const response = await Orderapproval(formData, agent, order_id);
+            console.log(response, "approveds")
+            if (response?.status === 200) {
+                setCopiedItemId(order_id);
+                fetchData();
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+
 
 
     useEffect(() => {
@@ -39,21 +56,7 @@ const Manual_Order = () => {
         }
     }, []);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const orderResponse = await getAllOrders();
-                if (orderResponse?.status === 200 && orderResponse?.data?.results)
-                    setCreateOrder(orderResponse.data.results);
-
-                const agentsResponse = await getAgents();
-                if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        fetchData();
-    }, []);
+  
 
     const copyToClipboard = async (text) => {
         try {
@@ -65,7 +68,7 @@ const Manual_Order = () => {
 
     const handleClick = (order_id, receipt, agent) => {
         console.log(order_id, "orderid", receipt, "recepit", agent, "agemnt")
-        const paymentUrl = `https://pay-full-in.vercel.app/create_fund/${order_id}/${receipt}/${agent}`;
+        const paymentUrl = `http://localhost:5173/create_fund/${order_id}/${receipt}/${agent}`;
         copyToClipboard(paymentUrl);
         setCopiedItemId(order_id);
     };
@@ -87,9 +90,6 @@ const Manual_Order = () => {
                                 <div className="row justify-content-end">
                                     <div className="col-lg-4 col-md-4">
                                         <input type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
-                                    </div>
-                                    <div className="col-md-2 mb-3">
-                                        <a className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Create Order</a>
                                     </div>
                                 </div>
                             </div>
@@ -160,11 +160,18 @@ const Manual_Order = () => {
                                                             <div className="col-xxl-3 col-12 mb-5">
                                                                 <div className="card h-100">
                                                                     <div className="card-body d-flex justify-content-center align-items-center">
-                                                                        <div className="text-center">
-                                                                            <span className={`badge ${provider?.approval_status === 'APPROVED' ? 'badge-success-soft' : (provider?.approval_status === 'PENDING' ? 'badge-warning-soft' : 'badge-danger-soft')}`}>
-                                                                                {provider?.approval_status}
-                                                                            </span>
-                                                                            <h5>{provider?.payment_amount}</h5>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="d-grid mb-2 mb-md-0">
+                                                                                    <button
+                                                                                        className={`btn ${provider?.approval_status === "APPROVED" ? 'bg-success' : 'btn-danger'}`}
+                                                                                        onClick={(e) => ApprovedOrders(provider?.order_id, provider?.agent)}
+                                                                                    >
+                                                                                        <i className="fe fe-shopping-cart me-2"></i>
+                                                                                        {provider?.approval_status === "APPROVED"  ? 'Approved' : 'Is Approved'}
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -197,51 +204,8 @@ const Manual_Order = () => {
                     </div>
                 </div>
             </div>
-
-            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title fs-5" id="exampleModalLabel">Create Order</h1>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                <div>
-                                    <div className="mb-3">
-                                        <label htmlFor="customerName" className="form-label">Type *</label>
-                                        <select onChange={(e) => handleType(e.target.value)} className="form-select" aria-label="Default select example">
-                                            <option selected>Open this select menu</option>
-                                            <option value="PAYIN">PAYIN</option>
-                                            <option value="PAYOUT">PAYOUT</option>
-                                            <option value="PAYOUT LINK">PAYOUT LINK</option>
-                                        </select>
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="customerEmail" className="form-label">Agent *</label>
-                                        <select onChange={(e) => handleAgent(e.target.value)} className="form-select" aria-label="Default select example">
-                                            <option defaultValue>Open this select menu</option>
-                                            {showAgents?.length !== 0 ? (
-                                                showAgents.map((provider) => (
-                                                    provider.is_agent ? (<option key={provider.id} value={provider.id}>{provider.username}</option>) : null
-                                                ))
-                                            ) : (
-                                                <option disabled>No data found</option>
-                                            )}
-                                        </select>
-                                    </div>
-                                    <div className="text-end d-flex justify-content-between mt-2">
-                                        <button type="button" className="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                        <button onClick={CreateOrders} type="button" className="btn btn-primary me-1">+ Create</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </>
     );
 };
 
-export default Manual_Order;
+export default Approval_Agent;
