@@ -1,45 +1,119 @@
 import React, { useState, useEffect } from 'react';
 import { createOrder, getAgentOrders, getAgents, getAllOrders, Orderapproval } from '../utils/Constants';
 import toast from 'react-hot-toast';
+import { Button, Modal } from 'react-bootstrap';
+
 
 const Approval_Agent = () => {
     const token = localStorage.getItem("token");
     const profile = JSON.parse(localStorage.getItem("data"));
 
 
+    const [showModal, setShowModal] = useState(false);
+
+    const [ApprovedStatus, setApprovedStatus] = useState(null)
     const [orderCreate, setCreateOrder] = useState([]);
     const [copiedItemId, setCopiedItemId] = useState(null);
+    const [utr, setutr] = useState("");
+    const [utrValidError, setutrValidError] = useState(false);
+    const [utrIsRequiredError, setutrIsRequiredlError] = useState(false);
+    const [remark, setRemark] = useState("");
+    const [remarkValidError, setRemarkValidError] = useState(false);
+    const [remarkIsRequiredError, setRemarkIsRequiredlError] = useState(false);
+    const [order_id, setOrder_id] = useState("");
+    const [agent, setAgent] = useState("")
 
+    const handleCloseModal = () => setShowModal(false);
     useEffect(() => {
         fetchData();
     }, []);
 
     const fetchData = async () => {
+        // try {
+        //     const orderResponse = await getAllOrders(profile[0]?.id);
+        //     console.log(orderResponse)
+        //     if (orderResponse?.status === 200 && orderResponse?.data?.results)
+        //         setCreateOrder(orderResponse.data.results);
+        // } catch (err) {
+        //     console.log(err);
+        // }
+
         try {
-            const orderResponse = await getAgentOrders(profile[0]?.id);
-            console.log(orderResponse)
-            if (orderResponse?.status === 200 && orderResponse?.data?.results)
-                setCreateOrder(orderResponse.data.results);
+            const orderResponse = await getAllOrders();
+            console.log(orderResponse);
+            if (orderResponse?.status === 200 && orderResponse?.data?.results) {
+                const filteredOrders = orderResponse.data.results.filter(order => order.agent === profile[0]?.id);
+                setCreateOrder(filteredOrders);
+            }
         } catch (err) {
             console.log(err);
         }
     };
 
+    const handleUTR = (value) => {
+        setutr(value);
+        const rex = /^[A-Za-z0-9]{10,20}$/;
+        if (value === "") {
+            setutrValidError(false);
+            setutrIsRequiredlError(true);
+        } else if (rex.test(value) === false) {
+            setutrValidError(true);
+            setutrIsRequiredlError(false);
+        } else {
+            setutrValidError(false);
+            setutrIsRequiredlError(false);
+        }
+    }
 
-    const ApprovedOrders = async (order_id, agent) => {
-        const formData = new FormData();
-        formData.append('utr', '1234567890');
-        formData.append("approval_status", "APPROVED");
-        formData.append("remark", "Payment verified and approved.");
-        try {
-            const response = await Orderapproval(formData, agent, order_id);
-            console.log(response, "approveds")
-            if (response?.status === 200) {
-                setCopiedItemId(order_id);
-                fetchData();
+    const handleRemark = (value) => {
+        setRemark(value);
+        const rex = /^[a-zA-Z\s]*$/;
+        if (value === "") {
+            setRemarkValidError(false);
+            setRemarkIsRequiredlError(true);
+        } else if (rex.test(value) === false) {
+            setRemarkValidError(true);
+            setRemarkIsRequiredlError(false);
+        } else {
+            setRemarkValidError(false);
+            setRemarkIsRequiredlError(false);
+        }
+    }
+
+
+    const handleApprove = (order_id, agent) => {
+        setOrder_id(order_id);
+        setAgent(agent);
+        if (order_id, agent) {
+            setShowModal(true)
+        }
+    }
+
+
+    const ApprovedOrders = async () => {
+        if (utr === "" || !utr) {
+            setutrIsRequiredlError(true);
+        }
+        if (remark === "" || !remark) {
+            setRemarkIsRequiredlError(true);
+        }
+        if ((utr !== "", remark !== "")) {
+            const formData = new FormData();
+            formData.append('utr', utr);
+            formData.append("approval_status", "APPROVED");
+            formData.append("remark", remark);
+            try {
+                const response = await Orderapproval(formData, agent, order_id);
+                if (response?.status === 200) {
+                    toast.success("Order Approved Successfully");
+                    setApprovedStatus(response?.data?.approval_status)
+                    setCopiedItemId(order_id);
+                    fetchData();
+                    setShowModal(false)
+                }
+            } catch (err) {
+                console.log(err);
             }
-        } catch (err) {
-            console.log(err);
         }
     };
 
@@ -56,7 +130,7 @@ const Approval_Agent = () => {
         }
     }, []);
 
-  
+
 
     const copyToClipboard = async (text) => {
         try {
@@ -151,8 +225,9 @@ const Approval_Agent = () => {
                                                                             </div>
                                                                         </div>
                                                                         <div class="d-flex justify-content-start">
-                                                                            <p className='mx-2'>PAYMENT URL:</p>
-                                                                            <a type='button' onClick={(e) => handleClick(provider?.order_id, provider?.receipt, provider?.agent)} className="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment URL'}</a>
+                                                                            <p className='mx-2'>Payment Amount:</p>
+                                                                            <h5>{provider?.payment_amount}</h5>
+                                                                            {/* <a type='button' onClick={(e) => handleClick(provider?.order_id, provider?.receipt, provider?.agent)} className="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment URL'}</a> */}
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -163,12 +238,13 @@ const Approval_Agent = () => {
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="d-grid mb-2 mb-md-0">
-                                                                                    <button
+                                                                                    <button data-bs-toggle="modal" data-bs-target="#exampleModal"
                                                                                         className={`btn ${provider?.approval_status === "APPROVED" ? 'bg-success' : 'btn-danger'}`}
-                                                                                        onClick={(e) => ApprovedOrders(provider?.order_id, provider?.agent)}
+                                                                                        onClick={(e) => handleApprove(provider?.order_id, provider?.agent)}
+                                                                                        disabled={provider?.approval_status === "APPROVED"}
                                                                                     >
                                                                                         <i className="fe fe-shopping-cart me-2"></i>
-                                                                                        {provider?.approval_status === "APPROVED"  ? 'Approved' : 'Is Approved'}
+                                                                                        {provider?.approval_status === "APPROVED" ? 'Approved' : ' Approve'}
                                                                                     </button>
                                                                                 </div>
                                                                             </div>
@@ -204,6 +280,60 @@ const Approval_Agent = () => {
                     </div>
                 </div>
             </div>
+
+            <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Order Approval</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form>
+                        <div>
+                            <div className="mb-3">
+                                <label htmlFor="customerName" className="form-label">UTR Number *</label>
+                                <input onChange={(e) => handleUTR(e.target.value)} type="text" class="form-control" placeholder="Enter UTR number" required="" />
+                                {utrIsRequiredError && (
+                                    <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
+                                        UTR Number is required
+                                    </div>
+                                )}
+                                {utrValidError && (
+                                    <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
+                                        Please enter valid UTR number
+                                    </div>
+                                )}
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="customerEmail" className="form-label">Remark *</label>
+                                <input onChange={(e) => handleRemark(e.target.value)} type="text" class="form-control" placeholder="Enter Remark" required="" />
+                                {utrIsRequiredError && (
+                                    <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
+                                        Remark Number is required
+                                    </div>
+                                )}
+                                {utrValidError && (
+                                    <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
+                                        Please enter valid Remark
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </form>
+                </Modal.Body>
+                <Modal.Footer className='justify-content-between'>
+                    <div className="text-end d-flex justify-content-between mt-2">
+                        <button type="button" onClick={ApprovedOrders} className="btn btn-primary me-1">+ APPROVED</button>
+                    </div>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+
+
+
+
+
         </>
     );
 };

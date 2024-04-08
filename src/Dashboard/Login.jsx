@@ -110,7 +110,8 @@ const Login = () => {
                     );
                 }
             } catch (err) {
-                console.log(err)
+                console.log(err);
+                toast.error(err?.response?.data?.non_field_errors[0])
             }
         }
 
@@ -119,13 +120,11 @@ const Login = () => {
     return (
         <div>
             <main class="container d-flex flex-column">
-                <div class="row align-items-center justify-content-center g-0
-        min-vh-100">
+                <div class="row align-items-center justify-content-center g-0 min-vh-100">
                     <div class="col-12 col-md-8 col-lg-6 col-xxl-4 py-8 py-xl-0">
                         <a href="#" class="form-check form-switch theme-switch btn btn-light btn-icon rounded-circle d-none ">
                             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
                             <label class="form-check-label" for="flexSwitchCheckDefault"></label>
-
                         </a>
                         {/* <!-- Card --> */}
                         <div class="card smooth-shadow-md">
@@ -158,8 +157,7 @@ const Login = () => {
                                         <input onChange={(e) => handlePassword(e.target.value)} type="password" id="password" class="form-control" name="password" placeholder="**************" required="" />
                                     </div>
                                     {/* <!-- Checkbox --> */}
-                                    <div class="d-lg-flex justify-content-between align-items-center
-                  mb-4">
+                                    <div class="d-lg-flex justify-content-between align-items-center mb-4">
                                         <div class="form-check custom-checkbox">
                                             <input type="checkbox" class="form-check-input" id="rememberme" />
                                             <label class="form-check-label" for="rememberme">Remember
@@ -180,14 +178,10 @@ const Login = () => {
                                                     Account </a>
                                             </div>
                                             <div>
-                                                <a href="forget-password.html" class="text-inherit
-                        fs-5">Forgot your password?</a>
+                                                <a href="forget-password.html" class="text-inherit fs-5">Forgot your password?</a>
                                             </div>
-
                                         </div>
                                     </div>
-
-
                                 </form>
                             </div>
                         </div>

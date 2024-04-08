@@ -64,7 +64,6 @@ const Manual_Order = () => {
     };
 
     const handleClick = (order_id, receipt, agent) => {
-        console.log(order_id, "orderid", receipt, "recepit", agent, "agemnt")
         const paymentUrl = `https://pay-full-in.vercel.app/create_fund/${order_id}/${receipt}/${agent}`;
         copyToClipboard(paymentUrl);
         setCopiedItemId(order_id);
@@ -213,8 +212,6 @@ const Manual_Order = () => {
                                         <select onChange={(e) => handleType(e.target.value)} className="form-select" aria-label="Default select example">
                                             <option selected>Open this select menu</option>
                                             <option value="PAYIN">PAYIN</option>
-                                            <option value="PAYOUT">PAYOUT</option>
-                                            <option value="PAYOUT LINK">PAYOUT LINK</option>
                                         </select>
                                     </div>
                                     <div className="mb-3">

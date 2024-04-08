@@ -217,17 +217,16 @@ const Sidebar = () => {
 
 
     const [activeLink, setActiveLink] = useState('');
-    const [isEmployeesCollapsed, setIsEmployeesCollapsed] = useState(true);
-    const [isAttendancesCollapsed, setIsAttendancesCollapsed] = useState(true);
-    const [isLeaveManagementCollapsed, setIsLeaveManagementCollapsed] = useState(true);
-    const [isAppraisalsCollapsed, setIsAppraisalsCollapsed] = useState(true);
-    const [isReimbursementCollapsed, setIsReimbursementCollapsed] = useState(true);
-    const [isPayrollManagementCollapsed, setIsPayrollManagementCollapsed] = useState(true);
-    const [isMyDocumentsCollapsed, setIsMyDocumentsCollapsed] = useState(true);
-    const [isAnnouncementCollapsed, setIsAnnouncementCollapsed] = useState(true);
 
-    const [isMenuCollapsed, setIsMenuCollapsed] = useState(true);
-    const handleToggleMenu = () => setIsMenuCollapsed(!isMenuCollapsed);
+
+    const [role, setRole] = useState();
+    const [updateRole, setUpdateRole] = useState();
+
+    useEffect(() => {
+        const profile = JSON.parse(localStorage.getItem("data"));
+        setRole(profile[0].is_superadmin);
+        setUpdateRole(profile[0].is_agent);
+    }, []);
 
 
     useEffect(() => {
@@ -235,49 +234,13 @@ const Sidebar = () => {
         if (storedActiveLink) {
             setActiveLink(storedActiveLink);
         }
-
-        const storedIsMenuCollapsed = localStorage.getItem('isMenuCollapsed');
-        if (storedIsMenuCollapsed) {
-            setIsMenuCollapsed(storedIsMenuCollapsed === 'true');
-        }
     }, []);
 
     useEffect(() => {
         localStorage.setItem('activeLink', activeLink);
-        localStorage.setItem('isMenuCollapsed', isMenuCollapsed);
-    }, [activeLink, isEmployeesCollapsed, isAttendancesCollapsed, isLeaveManagementCollapsed, isAppraisalsCollapsed, isReimbursementCollapsed, isPayrollManagementCollapsed, isMyDocumentsCollapsed, isAnnouncementCollapsed]);
+    }, [activeLink]);
 
-    const handleToggleEmployeesMenu = () => {
-        setIsEmployeesCollapsed(!isEmployeesCollapsed);
-    };
 
-    const handleToggleAttendancesMenu = () => {
-        setIsAttendancesCollapsed(!isAttendancesCollapsed);
-    };
-
-    const handleToggleLeaveManagement = () => {
-        setIsLeaveManagementCollapsed(!isLeaveManagementCollapsed);
-    };
-
-    const handleToggleAppraisals = () => {
-        setIsAppraisalsCollapsed(!isAppraisalsCollapsed);
-    };
-
-    const handleToggleReimbursement = () => {
-        setIsReimbursementCollapsed(!isReimbursementCollapsed);
-    };
-
-    const handleTogglePayrollManagement = () => {
-        setIsPayrollManagementCollapsed(!isPayrollManagementCollapsed);
-    };
-
-    const handleToggleMyDocuments = () => {
-        setIsMyDocumentsCollapsed(!isMyDocumentsCollapsed);
-    };
-
-    const handleToggleAnnouncement = () => {
-        setIsAnnouncementCollapsed(!isAnnouncementCollapsed);
-    };
 
     const handleNavLinkClick = (link) => {
         setActiveLink(link);
@@ -304,7 +267,7 @@ const Sidebar = () => {
                                     <div class="simplebar-content" style={{ padding: "0px" }}>
                                         {/* <!-- Brand logo --> */}
                                         <div className='mb-5'>
-                                        <img src="/logo.png" alt="" width={250}/>
+                                            <img src="/logo.png" alt="" width={250} />
                                         </div>
                                         {/* <!-- Navbar nav --> */}
                                         <ul class="navbar-nav flex-column" id="sideNavbar">
@@ -316,10 +279,32 @@ const Sidebar = () => {
                                             </li>
                                             <li class="nav-item">
                                                 <Link to="/manual_order" class="nav-link has-arrow">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><title>Pay Out</title><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg>
+                                                    {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><title>Pay Out</title><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg> */}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path  d="m17.371 19.827l2.84-2.796l-.626-.627l-2.214 2.183l-.956-.975l-.627.632zM6.77 8.73h10.462v-1H6.769zM18 22.115q-1.671 0-2.836-1.164T14 18.115t1.164-2.835T18 14.115t2.836 1.165T22 18.115t-1.164 2.836T18 22.115M4 20.77V4h16v7.56q-.892-.293-1.828-.301t-1.845.241H6.769v1h7.312q-.752.521-1.326 1.223t-.945 1.546H6.77v1h4.709q-.108.404-.168.815t-.061.858q0 .685.143 1.359q.144.674.43 1.299l-.035.035l-1.134-.827l-1.346.961l-1.346-.961l-1.347.961l-1.346-.961z"/></svg>
                                                     Manual Order
                                                 </Link>
                                             </li>
+                                            {
+                                                role && (
+                                                    <li class="nav-item">
+                                                        <Link to="/createuser" class="nav-link has-arrow">
+                                                            {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><title>Pay Out</title><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg> */}
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#0a0a0a" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46"/></svg>
+                                                            Create User
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            }
+                                            {
+                                                updateRole && (
+                                                    <li class="nav-item">
+                                                        <Link to="/updateuser" class="nav-link has-arrow">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#0a0a0a" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46"/></svg>
+                                                            Update User
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            }
                                         </ul>
                                     </div>
                                 </div>
