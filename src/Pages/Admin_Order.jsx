@@ -1,112 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { createOrder, getAgentOrders, getAgents, getAllOrders, Orderapproval } from '../utils/Constants';
+import { createOrder, getAgents, getAllOrders } from '../utils/Constants';
 import toast from 'react-hot-toast';
-import { Button, Modal } from 'react-bootstrap';
 
-
-const Approval_Agent = () => {
+const Admin_Order = () => {
     const profile = JSON.parse(localStorage.getItem("data"));
-
-
-    const [showModal, setShowModal] = useState(false);
-
-    const [ApprovedStatus, setApprovedStatus] = useState(null)
     const [orderCreate, setCreateOrder] = useState([]);
-    const [utr, setutr] = useState("");
-    const [utrValidError, setutrValidError] = useState(false);
-    const [utrIsRequiredError, setutrIsRequiredlError] = useState(false);
-    const [remark, setRemark] = useState("");
-    const [remarkValidError, setRemarkValidError] = useState(false);
-    const [remarkIsRequiredError, setRemarkIsRequiredlError] = useState(false);
-    const [order_id, setOrder_id] = useState("");
-    const [agent, setAgent] = useState("")
+    const [showAgents, setShowAgents] = useState([]);
+    const [type, setType] = useState('');
+    const [agent, setAgent] = useState('');
+    const [copiedItemId, setCopiedItemId] = useState(null);
 
-    const handleCloseModal = () => setShowModal(false);
-    useEffect(() => {
-        fetchData();
-    }, []);
+    const handleType = (value) => setType(value);
+    const handleAgent = (value) => setAgent(value);
 
-    const fetchData = async () => {
-        // try {
-        //     const orderResponse = await getAllOrders(profile[0]?.id);
-        //     console.log(orderResponse)
-        //     if (orderResponse?.status === 200 && orderResponse?.data?.results)
-        //         setCreateOrder(orderResponse.data.results);
-        // } catch (err) {
-        //     console.log(err);
-        // }
-
-        try {
-            const orderResponse = await getAllOrders();
-            if (orderResponse?.status === 200 && orderResponse?.data?.results) {
-                const filteredOrders = orderResponse.data.results.filter(order => order.agent === profile[0]?.id);
-                setCreateOrder(filteredOrders);
-            }
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    const handleUTR = (value) => {
-        setutr(value);
-        const rex = /^[A-Za-z0-9]{10,20}$/;
-        if (value === "") {
-            setutrValidError(false);
-            setutrIsRequiredlError(true);
-        } else if (rex.test(value) === false) {
-            setutrValidError(true);
-            setutrIsRequiredlError(false);
-        } else {
-            setutrValidError(false);
-            setutrIsRequiredlError(false);
-        }
-    }
-
-    const handleRemark = (value) => {
-        setRemark(value);
-        const rex = /^[a-zA-Z\s]*$/;
-        if (value === "") {
-            setRemarkValidError(false);
-            setRemarkIsRequiredlError(true);
-        } else if (rex.test(value) === false) {
-            setRemarkValidError(true);
-            setRemarkIsRequiredlError(false);
-        } else {
-            setRemarkValidError(false);
-            setRemarkIsRequiredlError(false);
-        }
-    }
-
-
-    const handleApprove = (order_id, agent) => {
-        setOrder_id(order_id);
-        setAgent(agent);
-        if (order_id, agent) {
-            setShowModal(true)
-        }
-    }
-
-
-    const ApprovedOrders = async () => {
-        if (utr === "" || !utr) {
-            setutrIsRequiredlError(true);
-        }
-        if (remark === "" || !remark) {
-            setRemarkIsRequiredlError(true);
-        }
-        if ((utr !== "", remark !== "")) {
+    const CreateOrders = async (e) => {
+        e.preventDefault();
+        if (type && agent) {
             const formData = new FormData();
-            formData.append('utr', utr);
-            formData.append("approval_status", "APPROVED");
-            formData.append("remark", remark);
+            formData.append('type', type);
+            formData.append('agent', agent);
             try {
-                const response = await Orderapproval(formData, agent, order_id);
-                if (response?.status === 200) {
-                    toast.success("Order Approved Successfully");
-                    setApprovedStatus(response?.data?.approval_status)
-                    setCopiedItemId(order_id);
-                    fetchData();
-                    setShowModal(false)
+                const response = await createOrder(formData);
+                if (response?.status === 201) {
                 }
             } catch (err) {
                 console.log(err);
@@ -116,10 +31,37 @@ const Approval_Agent = () => {
 
 
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const orderResponse = await getAllOrders();
+                if (orderResponse?.status === 200 && orderResponse?.data?.results) {
+                    const filteredOrders = orderResponse.data.results.filter(order => order.client_name === profile[0]?.username);
+                    setCreateOrder(filteredOrders);
+                }
 
+                const agentsResponse = await getAgents();
+                if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        fetchData();
+    }, []);
 
+    const copyToClipboard = async (text) => {
+        try {
+            await navigator.clipboard.writeText(text);
+        } catch (error) {
+            console.error('Failed to copy:', error);
+        }
+    };
 
-
+    const handleClick = (order_id, receipt, agent) => {
+        const paymentUrl = `https://pay-full-in.vercel.app/create_fund/${order_id}/${receipt}/${agent}`;
+        copyToClipboard(paymentUrl);
+        setCopiedItemId(order_id);
+    };
 
     return (
         <>
@@ -138,6 +80,9 @@ const Approval_Agent = () => {
                                 <div className="row justify-content-end">
                                     <div className="col-lg-4 col-md-4">
                                         <input type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
+                                    </div>
+                                    <div className="col-md-2 mb-3">
+                                        <a className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Create Order</a>
                                     </div>
                                 </div>
                             </div>
@@ -199,9 +144,8 @@ const Approval_Agent = () => {
                                                                             </div>
                                                                         </div>
                                                                         <div class="d-flex justify-content-start">
-                                                                            <p className='mx-2'>Payment Amount:</p>
-                                                                            <h5>{provider?.payment_amount}</h5>
-                                                                            {/* <a type='button' onClick={(e) => handleClick(provider?.order_id, provider?.receipt, provider?.agent)} className="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment URL'}</a> */}
+                                                                            <p className='mx-2'>PAYMENT URL:</p>
+                                                                            <a type='button' onClick={(e) => handleClick(provider?.order_id, provider?.receipt, provider?.agent)} className="link-primary">{copiedItemId === provider.order_id ? 'Copied!' : 'Copy Payment URL'}</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -209,19 +153,11 @@ const Approval_Agent = () => {
                                                             <div className="col-xxl-3 col-12 mb-5">
                                                                 <div className="card h-100">
                                                                     <div className="card-body d-flex justify-content-center align-items-center">
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="d-grid mb-2 mb-md-0">
-                                                                                    <button data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                                                        className={`btn ${provider?.approval_status === "APPROVED" ? 'bg-success' : 'btn-danger'}`}
-                                                                                        onClick={(e) => handleApprove(provider?.order_id, provider?.agent)}
-                                                                                        disabled={provider?.approval_status === "APPROVED"}
-                                                                                    >
-                                                                                        <i className="fe fe-shopping-cart me-2"></i>
-                                                                                        {provider?.approval_status === "APPROVED" ? 'Approved' : ' Approve'}
-                                                                                    </button>
-                                                                                </div>
-                                                                            </div>
+                                                                        <div className="text-center">
+                                                                            <span className={`badge ${provider?.approval_status === 'APPROVED' ? 'badge-success-soft' : (provider?.approval_status === 'PENDING' ? 'badge-warning-soft' : 'badge-danger-soft')}`}>
+                                                                                {provider?.approval_status}
+                                                                            </span>
+                                                                            <h5>{provider?.payment_amount}</h5>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -255,61 +191,48 @@ const Approval_Agent = () => {
                 </div>
             </div>
 
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Order Approval</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <form>
-                        <div>
-                            <div className="mb-3">
-                                <label htmlFor="customerName" className="form-label">UTR Number *</label>
-                                <input onChange={(e) => handleUTR(e.target.value)} type="text" class="form-control" placeholder="Enter UTR number" required="" />
-                                {utrIsRequiredError && (
-                                    <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
-                                        UTR Number is required
-                                    </div>
-                                )}
-                                {utrValidError && (
-                                    <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
-                                        Please enter valid UTR number
-                                    </div>
-                                )}
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="customerEmail" className="form-label">Remark *</label>
-                                <input onChange={(e) => handleRemark(e.target.value)} type="text" class="form-control" placeholder="Enter Remark" required="" />
-                                {remarkIsRequiredError && (
-                                    <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
-                                        Remark Number is required
-                                    </div>
-                                )}
-                                {remarkValidError && (
-                                    <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
-                                        Please enter valid Remark
-                                    </div>
-                                )}
-                            </div>
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="exampleModalLabel">Create Order</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                    </form>
-                </Modal.Body>
-                <Modal.Footer className='justify-content-between'>
-                    <div className="text-end d-flex justify-content-between mt-2">
-                        <button type="button" onClick={ApprovedOrders} className="btn btn-primary me-1">+ APPROVED</button>
+                        <div className="modal-body">
+                            <form>
+                                <div>
+                                    <div className="mb-3">
+                                        <label htmlFor="customerName" className="form-label">Type *</label>
+                                        <select onChange={(e) => handleType(e.target.value)} className="form-select" aria-label="Default select example">
+                                            <option selected>Open this select menu</option>
+                                            <option value="PAYIN">PAYIN</option>
+                                        </select>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="customerEmail" className="form-label">Agent *</label>
+                                        <select onChange={(e) => handleAgent(e.target.value)} className="form-select" aria-label="Default select example">
+                                            <option defaultValue>Open this select menu</option>
+                                            {showAgents?.length !== 0 ? (
+                                                showAgents.map((provider) => (
+                                                    provider.is_agent ? (<option key={provider.id} value={provider.id}>{provider.username}</option>) : null
+                                                ))
+                                            ) : (
+                                                <option disabled>No data found</option>
+                                            )}
+                                        </select>
+                                    </div>
+                                    <div className="text-end d-flex justify-content-between mt-2">
+                                        <button type="button" className="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                        <button onClick={CreateOrders} type="button" className="btn btn-primary me-1">+ Create</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-
-
-
-
-
+                </div>
+            </div>
         </>
     );
 };
 
-export default Approval_Agent;
+export default Admin_Order;

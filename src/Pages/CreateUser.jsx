@@ -27,7 +27,7 @@ const CreateUser = () => {
 
     const handleUPI = (value) => {
         setUpi(value); // Corrected state variable name
-        const upiRegex = /^([a-zA-Z0-9._-]+)@([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,})$/;
+        const upiRegex = /^[a-zA-Z0-9.-]{2, 256}@[a-zA-Z][a-zA-Z]{2, 64}$/
         if (value === "") {
             setUpiValidError(false);
             setUpiIsRequiredError(true); // Corrected state variable name
@@ -106,9 +106,6 @@ const CreateUser = () => {
         if (username === "" || !username) {
             setUserNameIsRequiredError(true);
         }
-        if (upi === "" || !upi) {
-            setUpiIsRequiredError(true);
-        }
         if (password === "" || !password) {
             setPasswordIsRequiredError(true);
         }
@@ -116,7 +113,7 @@ const CreateUser = () => {
             setSelectedRoleIsRequiredError(true);
         }
 
-        if (email && username && password && upi && selectedRole) { // Changed the condition to check all fields
+        if (email && username && password && selectedRole) { // Changed the condition to check all fields
             const formData = new FormData();
             formData.append("username", username);
             formData.append("email", email);
@@ -231,11 +228,7 @@ const CreateUser = () => {
                                     <div className="mt-3">
                                         <label className="form-label">UPI Id *</label>
                                         <input type="text" onChange={(e) => handleUPI(e.target.value)} value={upi} className="form-control" placeholder="upi id" required="" />
-                                        {upiIsRequiredError && (
-                                            <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
-                                                UPI is required
-                                            </div>
-                                        )}
+                                        
                                         {upiValidError && (
                                             <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
                                                 Please enter valid UPI

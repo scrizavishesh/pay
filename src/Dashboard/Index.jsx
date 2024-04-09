@@ -1,22 +1,64 @@
 import { Icon } from '@iconify/react';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 // import Header from '../Layouts/Header'
 import Sidebar from '../Layouts/Sidebar'
 import PageRouter from '../MainRoute/PageRouter';
+import { CheckInAgent, CheckOutAgent } from '../utils/Constants';
 
 const Index = () => {
     const navigate = useNavigate();
 
+    const [agent, setRole] = useState();
+
+    useEffect(() => {
+        const profile = JSON.parse(localStorage.getItem("data"));
+        setRole(profile[0].is_agent);
+    }, []);
+
     const profile = JSON.parse(localStorage.getItem("data"));
 
+    const [isChecked, setIsChecked] = useState(false); // Initialize to 'Out of Stock'
 
+    const CheckIn = async () => {
+        try {
+            const response = await CheckInAgent();
+            console.log(response, "Check In");
+            if (response?.status === 200) {
+                toast.success("Checked In Successfully");
+                setIsChecked(true);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const CheckOut = async () => {
+        try {
+            const response = await CheckOutAgent();
+            if (response?.status === 200) {
+                toast.success("Checked Out Successfully");
+                setIsChecked(false);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+
+    // Function to toggle the checked status
+    const toggleChecked = () => {
+        setIsChecked(prevChecked => !prevChecked);
+    };
     const Logout = async () => {
         localStorage.removeItem("token")
         navigate("/")
         window.location.reload();
 
     }
+
+
 
     // console.log(profile[0].username)
 
@@ -43,7 +85,26 @@ const Index = () => {
                                 </svg>
                             </a>
 
+
                             <div class="d-none d-md-none d-lg-block">
+                                {
+                                    agent && (
+                                        <div className="form-check form-switch">
+                                            <input
+                                                className="form-check-input"
+                                                type="checkbox"
+                                                role="switch"
+                                                id="flexSwitchStock"
+                                                checked={isChecked}
+                                                onChange={isChecked ? CheckOut : CheckIn} // Toggle function based on isChecked state
+                                            />
+                                            <label className="form-check-label" htmlFor="flexSwitchStock">
+                                                {isChecked ? 'In Stock' : 'Out of Stock'}
+                                            </label>
+                                        </div>
+                                    )
+                                }
+
                             </div>
                             {/* <!--Navbar nav --> */}
                             <ul class="navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">

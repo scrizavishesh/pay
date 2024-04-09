@@ -124,6 +124,28 @@ export const UpdatesUsers = async (requestData, id) => {
   }
 }
 
+export const CheckInAgent = async () => {
+  axios.defaults.headers.common["Authorization"] = bearerToken;
+
+  var response = await axios.post(`${API_URL}/api/agents/checkin/`,);
+  if (response) {
+    return response;
+  } else {
+    return [];
+  }
+}
+
+export const CheckOutAgent = async () => {
+  axios.defaults.headers.common["Authorization"] = bearerToken;
+
+  var response = await axios.post(`${API_URL}/api/agents/checkout/`,);
+  if (response) {
+    return response;
+  } else {
+    return [];
+  }
+}
+
 
 
 
