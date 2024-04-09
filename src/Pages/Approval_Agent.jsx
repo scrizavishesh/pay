@@ -120,17 +120,6 @@ const Approval_Agent = () => {
 
 
 
-    useEffect(() => {
-        if (!token) {
-            toast.warning(
-                "your session has been expired ...kindly login again.",
-                "yellow"
-            );
-            navigate(`/`);
-        }
-    }, []);
-
-
 
     const copyToClipboard = async (text) => {
         try {

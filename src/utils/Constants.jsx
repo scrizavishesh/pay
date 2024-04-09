@@ -103,7 +103,7 @@ export const getAgentOrders = async (id) => {
 
 
 export const CreateUsers = async (requestData) => {
-  axios.defaults.headers.common["Authorization"] = "Token 861ab55612f25a543eff57b27d468b08aa87081b";
+  axios.defaults.headers.common["Authorization"] = bearerToken;
 
   var response = await axios.post(`${API_URL}/api/users/`, requestData);
   if (response) {
@@ -114,7 +114,7 @@ export const CreateUsers = async (requestData) => {
 }
 
 export const UpdatesUsers = async (requestData, id) => {
-  axios.defaults.headers.common["Authorization"] = "Token 861ab55612f25a543eff57b27d468b08aa87081b";
+  axios.defaults.headers.common["Authorization"] = bearerToken;
 
   var response = await axios.patch(`${API_URL}/api/users/${id}/`, requestData);
   if (response) {

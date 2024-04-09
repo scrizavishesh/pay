@@ -29,15 +29,6 @@ const Manual_Order = () => {
     };
 
 
-    useEffect(() => {
-        if (!token) {
-            toast.warning(
-                "your session has been expired ...kindly login again.",
-                "yellow"
-            );
-            navigate(`/`);
-        }
-    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
