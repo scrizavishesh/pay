@@ -49,6 +49,7 @@ const Admin_Order = () => {
         fetchData();
     }, []);
 
+
     const copyToClipboard = async (text) => {
         try {
             await navigator.clipboard.writeText(text);
@@ -214,7 +215,10 @@ const Admin_Order = () => {
                                             <option defaultValue>Open this select menu</option>
                                             {showAgents?.length !== 0 ? (
                                                 showAgents.map((provider) => (
-                                                    provider.is_agent ? (<option key={provider.id} value={provider.id}>{provider.username}</option>) : null
+                                                    provider.is_checked_in ? (
+                                                        <option key={provider.id} value={provider.id}>{provider.username}</option>
+                                                    ) :
+                                                    <option disabled>No agents are checked in!</option>
                                                 ))
                                             ) : (
                                                 <option disabled>No data found</option>
