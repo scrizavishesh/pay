@@ -5,6 +5,7 @@ import Admin_Order from '../Pages/Admin_Order';
 import Approval_Agent from '../Pages/Approval_Agent';
 import CreateUser from '../Pages/CreateUser';
 import DashboardMain from '../Pages/DashboardMain';
+import Download from '../Pages/Download';
 import SuperAdmin_Order from '../Pages/SuperAdmin_Order';
 import UpdateUser from '../Pages/UpdateUser';
 
@@ -34,7 +35,10 @@ const PageRouter = () => {
           <Route path="/manual_order" element={<Approval_Agent />} />
         ) : (
           superAdmin ? (
+           <>
             <Route path="/manual_order" element={<SuperAdmin_Order />} />
+            <Route path="/download" element={<Download />} />
+           </>
           ) : (
             <Route path="/manual_order" element={<Admin_Order />} />
           )

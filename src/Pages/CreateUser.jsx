@@ -229,11 +229,11 @@ const CreateUser = () => {
                                         <label className="form-label">UPI Id *</label>
                                         <input type="text" onChange={(e) => handleUPI(e.target.value)} value={upi} className="form-control" placeholder="upi id" required="" />
                                         
-                                        {upiValidError && (
+                                        {/* {upiValidError && (
                                             <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
                                                 Please enter valid UPI
                                             </div>
-                                        )}
+                                        )} */}
                                     </div>
                                     <div className="mt-3">
                                         <label className="form-label">Select Role *</label>

@@ -5,10 +5,26 @@ import toast from 'react-hot-toast';
 const Manual_Order = () => {
     const token = localStorage.getItem("token");
     const [orderCreate, setCreateOrder] = useState([]);
+    const [count, setCount] = useState(0);
+    const [nextPage, setNextPage] = useState('');
+    const [prevPage, setPrevPage] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const totalPages = Math.ceil(count / 8); // Assuming 8 items per page
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        fetchData(page === 1 ? nextPage : prevPage);
+    };
+
+
+
     const [showAgents, setShowAgents] = useState([]);
     const [type, setType] = useState('');
     const [agent, setAgent] = useState('');
     const [copiedItemId, setCopiedItemId] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+
 
     const handleType = (value) => setType(value);
     const handleAgent = (value) => setAgent(value);
@@ -27,24 +43,32 @@ const Manual_Order = () => {
             }
         }
     };
+    const fetchData = async (page) => {
+        try {
+            const orderResponse = await getAllOrders(searchTerm, currentPage);
+            console.log(orderResponse)
+            if (orderResponse?.status === 200 && orderResponse?.data?.results)
+            setCreateOrder(orderResponse?.data.results);
+            setCount(orderResponse?.data.count);
+            setNextPage(orderResponse?.data.next);
+            setPrevPage(orderResponse?.data.previous);
 
-
+            const agentsResponse = await getAgents();
+            if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const orderResponse = await getAllOrders();
-                if (orderResponse?.status === 200 && orderResponse?.data?.results)
-                    setCreateOrder(orderResponse.data.results);
 
-                const agentsResponse = await getAgents();
-                if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
         fetchData();
-    }, []);
+    }, [searchTerm]);
+
+    // Handle input change
+    const handleInputChange = (value) => {
+        setSearchTerm(value);
+    };
 
 
 
@@ -78,7 +102,7 @@ const Manual_Order = () => {
                             <div className="card-header">
                                 <div className="row justify-content-end">
                                     <div className="col-lg-4 col-md-4">
-                                        <input type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
+                                        <input value={searchTerm} onChange={(e) => handleInputChange(e.target.value)} type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
                                     </div>
                                     <div className="col-md-2 mb-3">
                                         <a className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Create Order</a>
@@ -174,14 +198,20 @@ const Manual_Order = () => {
                                 </div>
                             </div>
                             <div className="card-footer d-md-flex justify-content-between align-items-center">
-                                <span>Showing 1 to 8 of 12 entries</span>
+                                <span>Showing {((currentPage - 1) * 8) + 1} to {Math.min(currentPage * 8, count)} of {count} entries</span>
                                 <nav className="mt-2 mt-md-0">
                                     <ul className="pagination mb-0">
-                                        <li className="page-item"><a className="page-link" href="#!">Previous</a></li>
-                                        <li className="page-item active"><a className="page-link" href="#!">1</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">2</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">3</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">Next</a></li>
+                                        <li className={`page-item ${prevPage ? '' : 'disabled'}`}>
+                                            <button className="page-link" onClick={() => handlePageChange(currentPage - 1)} disabled={!prevPage}>Previous</button>
+                                        </li>
+                                        {[...Array(totalPages).keys()].map(page => (
+                                            <li key={page} className={`page-item ${page + 1 === currentPage ? 'active' : ''}`}>
+                                                <button className="page-link" onClick={() => handlePageChange(page + 1)}>{page + 1}</button>
+                                            </li>
+                                        ))}
+                                        <li className={`page-item ${nextPage ? '' : 'disabled'}`}>
+                                            <button className="page-link" onClick={() => handlePageChange(currentPage + 1)} disabled={!nextPage}>Next</button>
+                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -215,8 +245,8 @@ const Manual_Order = () => {
                                                 showAgents.map((provider) => (
                                                     provider.is_checked_in ? (
                                                         <option key={provider.id} value={provider.id}>{provider.username}</option>
-                                                    ) : 
-                                                    <option disabled>No agents are checked in!</option>
+                                                    ) :
+                                                        <option disabled>No agents are checked in!</option>
                                                 ))
                                             ) : (
                                                 <option disabled>No data found</option>

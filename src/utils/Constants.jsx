@@ -37,9 +37,9 @@ export const createOrder = async (requestData) => {
   }
 }
 
-export const getAllOrders = async () => {
+export const getAllOrders = async (searchData, pageNo) => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
-  var response = await axios.get(`${API_URL}/api/orders/`, );
+  var response = await axios.get(`${API_URL}/api/orders/?page=${pageNo}&search=${searchData}`, );
   if (response) {
     return response;
   } else {
@@ -139,6 +139,17 @@ export const CheckOutAgent = async () => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
 
   var response = await axios.post(`${API_URL}/api/agents/checkout/`,);
+  if (response) {
+    return response;
+  } else {
+    return [];
+  }
+}
+
+export const DownloadOrders = async (start_Date, end_date, id) => {
+  axios.defaults.headers.common["Authorization"] = bearerToken;
+
+  var response = await axios.get(`${API_URL}/api/orders/download-orders/?start_date=${start_Date}&end_date=${end_date}&agent_id=${id}`,);
   if (response) {
     return response;
   } else {
