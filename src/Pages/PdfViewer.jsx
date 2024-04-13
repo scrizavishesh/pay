@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 const PdfPreview = ({ pdfBase64 }) => {
     const [pdfUrl, setPdfUrl] = useState(null);
 
+    // useEffect(() => {
+  
+    // }, [pdfBase64])
+    
+
     // Function to convert base64 to blob
     const base64ToBlob = (base64Data, contentType) => {
         const sliceSize = 512;

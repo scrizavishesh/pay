@@ -6,8 +6,11 @@ import Approval_Agent from '../Pages/Approval_Agent';
 import CreateUser from '../Pages/CreateUser';
 import DashboardMain from '../Pages/DashboardMain';
 import Download from '../Pages/Download';
+import SuperAdminUserList from '../Pages/SuperAdminUserList';
 import SuperAdmin_Order from '../Pages/SuperAdmin_Order';
-import UpdateUser from '../Pages/UpdateUser';
+import UpdateUser from '../Pages/Password_Update_User';
+import Update_user from '../Pages/Update_user';
+import ResetPassword from '../Pages/ResetPassword';
 
 const Container = styled.div`
   /* styles */
@@ -38,6 +41,9 @@ const PageRouter = () => {
            <>
             <Route path="/manual_order" element={<SuperAdmin_Order />} />
             <Route path="/download" element={<Download />} />
+            <Route path="/userlist" element={<SuperAdminUserList />} />
+            <Route path="/updateuser/:id" element={<Update_user />} />
+            <Route path="/resetpassword/:id" element={<ResetPassword />} />
            </>
           ) : (
             <Route path="/manual_order" element={<Admin_Order />} />

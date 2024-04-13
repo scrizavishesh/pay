@@ -29,7 +29,7 @@ const UpdateUser = () => {
    
 
     const register = async () => {
-      
+        
         if (upi === "" || !upi) {
             setUpiIsRequiredError(true);
         }
