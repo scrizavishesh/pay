@@ -52,7 +52,7 @@ const Manual_Order = () => {
             console.log(orderResponse)
             if (orderResponse?.status === 200 && orderResponse?.data?.results)
                 setCreateOrder(orderResponse?.data.results);
-            setTotalItems(orderResponse?.data?.count);
+                setTotalItems(orderResponse?.data?.count);
         } catch (err) {
             console.log(err);
         }
