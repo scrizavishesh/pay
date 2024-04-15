@@ -48,9 +48,9 @@ export const getAllOrders = async (searchData, pageNo) => {
 }
 
 
-export const getAgents = async () => {
+export const getAgents = async (pageNo) => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
-  var response = await axios.get(`${API_URL}/api/users/getalluser/`, );
+  var response = await axios.get(`${API_URL}/api/users/getalluser/?page=${pageNo}`, );
   if (response) {
     return response;
   } else {

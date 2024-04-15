@@ -40,17 +40,10 @@ const Manual_Order = () => {
         setCurrentPage(pageNumber);
     };
 
-
-
-    const [showAgents, setShowAgents] = useState([]);
-    const [type, setType] = useState('');
-    const [agent, setAgent] = useState('');
-    const [copiedItemId, setCopiedItemId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
 
 
-    const handleType = (value) => setType(value);
-    const handleAgent = (value) => setAgent(value);
+
 
 
     const fetchData = async () => {
@@ -59,7 +52,7 @@ const Manual_Order = () => {
             console.log(orderResponse)
             if (orderResponse?.status === 200 && orderResponse?.data?.results)
                 setCreateOrder(orderResponse?.data.results);
-                setTotalItems(orderResponse?.data?.count);
+            setTotalItems(orderResponse?.data?.count);
         } catch (err) {
             console.log(err);
         }
@@ -120,7 +113,7 @@ const Manual_Order = () => {
                                     </div>
                                 </div>
                                 <div className="col-lg-4 col-md-4">
-                                        <input value={searchTerm} onChange={(e) => handleInputChange(e.target.value)} type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
+                                    <input value={searchTerm} onChange={(e) => handleInputChange(e.target.value)} type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
                                 </div>
                             </div>
                             {/* <!-- card --> */}
@@ -163,7 +156,7 @@ const Manual_Order = () => {
                                                                 <td>{provider?.upi}</td>
                                                                 <td>{provider?.payment_amount}</td>
                                                                 <td>{provider?.utr}</td>
-                                                                <td>{provider?.created_at.slice(0,10)}</td>
+                                                                <td>{provider?.created_at.slice(0, 10)}</td>
                                                                 <td>
                                                                     <span className={`badge ${provider?.approval_status === 'APPROVED' ? 'badge-success-soft' : (provider?.approval_status === 'PENDING' ? 'badge-warning-soft' : 'badge-danger-soft')}`}>
                                                                         {provider?.approval_status}
@@ -185,13 +178,13 @@ const Manual_Order = () => {
                                     </div>
                                 </div>
                                 <div className="card-footer d-md-flex justify-content-between align-items-center">
-                                    <span>Showing {(currentPage - 1) * 5 + 1} to {Math.min(currentPage * 5, totalItems)} of {totalItems} entries</span>
+                                    <span>Showing {(currentPage - 1) * 8 + 1} to {Math.min(currentPage * 8, totalItems)} of {totalItems} entries</span>
                                     <nav className="mt-2 mt-md-0">
                                         <ReactPaginate
                                             activePage={currentPage}
-                                            itemsCountPerPage={5}
+                                            itemsCountPerPage={8}
                                             totalItemsCount={totalItems}
-                                            pageRangeDisplayed={5}
+                                            pageRangeDisplayed={8}
                                             onChange={(e) => handlePageChange(e)}
                                             prevPageText="Previous"
                                             nextPageText="Next"

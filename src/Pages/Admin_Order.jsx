@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createOrder, getAgents, getAllOrders } from '../utils/Constants';
 import toast from 'react-hot-toast';
+import ReactPaginate from 'react-js-pagination';
 
 const Admin_Order = () => {
     const profile = JSON.parse(localStorage.getItem("data"));
@@ -9,6 +10,14 @@ const Admin_Order = () => {
     const [type, setType] = useState('');
     const [agent, setAgent] = useState('');
     const [copiedItemId, setCopiedItemId] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
 
     const handleType = (value) => setType(value);
     const handleAgent = (value) => setAgent(value);
@@ -22,6 +31,7 @@ const Admin_Order = () => {
             try {
                 const response = await createOrder(formData);
                 if (response?.status === 201) {
+                    window.location.reload();
                 }
             } catch (err) {
                 console.log(err);
@@ -30,24 +40,36 @@ const Admin_Order = () => {
     };
 
 
-
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const orderResponse = await getAllOrders();
-                if (orderResponse?.status === 200 && orderResponse?.data?.results) {
-                    const filteredOrders = orderResponse.data.results.filter(order => order.client_name === profile[0]?.username);
-                    setCreateOrder(filteredOrders);
-                }
-
-                const agentsResponse = await getAgents();
-                if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
         fetchData();
-    }, []);
+    }, [searchTerm, currentPage]);
+
+    const fetchData = async () => {
+        try {
+            const orderResponse = await getAllOrders(searchTerm, currentPage);
+            console.log(orderResponse, "Orderresponse")
+            if (orderResponse?.status === 200 && orderResponse?.data?.results) {
+                const filteredOrders = orderResponse.data.results.filter(order => order.client_name === profile[0]?.username);
+                setCreateOrder(filteredOrders);
+
+            }
+
+            const agentsResponse = await getAgents();
+
+            if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data?.results);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleInputChange = (value) => {
+        setSearchTerm(value);
+    };
+
+
+
+
+
 
 
     const copyToClipboard = async (text) => {
@@ -80,7 +102,7 @@ const Admin_Order = () => {
                             <div className="card-header">
                                 <div className="row justify-content-end">
                                     <div className="col-lg-4 col-md-4">
-                                        <input type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
+                                        <input value={searchTerm} onChange={(e) => handleInputChange(e.target.value)} type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
                                     </div>
                                     <div className="col-md-2 mb-3">
                                         <a className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Create Order</a>
@@ -176,15 +198,19 @@ const Admin_Order = () => {
                                 </div>
                             </div>
                             <div className="card-footer d-md-flex justify-content-between align-items-center">
-                                <span>Showing 1 to 8 of 12 entries</span>
+                                <span>Showing {(currentPage - 1) * 8 + 1} to {Math.min(currentPage * 8, totalItems)} of {totalItems} entries</span>
                                 <nav className="mt-2 mt-md-0">
-                                    <ul className="pagination mb-0">
-                                        <li className="page-item"><a className="page-link" href="#!">Previous</a></li>
-                                        <li className="page-item active"><a className="page-link" href="#!">1</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">2</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">3</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">Next</a></li>
-                                    </ul>
+                                    <ReactPaginate
+                                        activePage={currentPage}
+                                        itemsCountPerPage={8}
+                                        totalItemsCount={totalItems}
+                                        pageRangeDisplayed={8}
+                                        onChange={(e) => handlePageChange(e)}
+                                        prevPageText="Previous"
+                                        nextPageText="Next"
+                                        itemClass="page-item"
+                                        linkClass="page-link"
+                                    />
                                 </nav>
                             </div>
                         </div>
@@ -218,7 +244,7 @@ const Admin_Order = () => {
                                                     provider.is_checked_in ? (
                                                         <option key={provider.id} value={provider.id}>{provider.username}</option>
                                                     ) :
-                                                    <option disabled>No agents are checked in!</option>
+                                                        <option disabled>No agents are checked in!</option>
                                                 ))
                                             ) : (
                                                 <option disabled>No data found</option>

@@ -5,6 +5,7 @@ import { Icon } from '@iconify/react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { getAgents } from '../utils/Constants';
+import ReactPaginate from 'react-js-pagination';
 
 const StyledContainer = styled.div`
   .btn-outline-primary {
@@ -29,19 +30,32 @@ const StyledContainer = styled.div`
 
 const SuperAdminUserList = () => {
 
-    const [Employees, setEmployees] = useState([])
+    const [Employees, setEmployees] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     useEffect(() => {
         getEmployess();
-    }, [])
+    }, [currentPage]);
+
+    // Handle input change
+    const handleInputChange = (value) => {
+        setSearchTerm(value);
+    };
 
 
     const getEmployess = async (e) => {
-        const response = await getAgents();
+        const response = await getAgents(currentPage);
+        console.log(response, "resuser list")
         try {
             if (response?.status === 200) {
                 toast.success("Gets all users successfully");
-                setEmployees(response?.data)
+                setEmployees(response?.data?.results);
+                setTotalItems(response?.data?.count);
             } else {
             }
         } catch (err) {
@@ -133,7 +147,7 @@ const SuperAdminUserList = () => {
                                                                     </span>
                                                                 </td>
                                                                 <td>
-                                                                    <Link to={`/resetpassword/${employ?.id}`} class="btn btn-icon btn-sm btn-ghost rounded-circle"  role="button">
+                                                                    <Link to={`/resetpassword/${employ?.id}`} class="btn btn-icon btn-sm btn-ghost rounded-circle" role="button">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="#182A75" d="M12.63 2c5.53 0 10.01 4.5 10.01 10s-4.48 10-10.01 10c-3.51 0-6.58-1.82-8.37-4.57l1.58-1.25C7.25 18.47 9.76 20 12.64 20a8 8 0 0 0 8-8a8 8 0 0 0-8-8C8.56 4 5.2 7.06 4.71 11h2.76l-3.74 3.73L0 11h2.69c.5-5.05 4.76-9 9.94-9m2.96 8.24c.5.01.91.41.91.92v4.61c0 .5-.41.92-.92.92h-5.53c-.51 0-.92-.42-.92-.92v-4.61c0-.51.41-.91.91-.92V9.23c0-1.53 1.25-2.77 2.77-2.77c1.53 0 2.78 1.24 2.78 2.77zm-2.78-2.38c-.75 0-1.37.61-1.37 1.37v1.01h2.75V9.23c0-.76-.62-1.37-1.38-1.37" /></svg>
                                                                     </Link>
                                                                     <Link to={`/updateuser/${employ?.id}`} class="btn btn-icon btn-sm btn-ghost rounded-circle" role="button">
@@ -155,16 +169,20 @@ const SuperAdminUserList = () => {
                                         </table>
                                     </div>
                                 </div>
-                                <div class="card-footer d-md-flex justify-content-between align-items-center">
-                                    <span>Showing 1 to 8 of 12 entries</span>
-                                    <nav class="mt-2 mt-md-0">
-                                        <ul class="pagination mb-0">
-                                            <li class="page-item"><a class="page-link" href="#!">Previous</a></li>
-                                            <li class="page-item"><a class="page-link active" href="#!">1</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">3</a></li>
-                                            <li class="page-item"><a class="page-link" href="#!">Next</a></li>
-                                        </ul>
+                                <div className="card-footer d-md-flex justify-content-between align-items-center">
+                                    <span>Showing {(currentPage - 1) * 8 + 1} to {Math.min(currentPage * 8, totalItems)} of {totalItems} entries</span>
+                                    <nav className="mt-2 mt-md-0">
+                                        <ReactPaginate
+                                            activePage={currentPage}
+                                            itemsCountPerPage={8}
+                                            totalItemsCount={totalItems}
+                                            pageRangeDisplayed={8}
+                                            onChange={(e) => handlePageChange(e)}
+                                            prevPageText="Previous"
+                                            nextPageText="Next"
+                                            itemClass="page-item"
+                                            linkClass="page-link"
+                                        />
                                     </nav>
                                 </div>
                             </div>

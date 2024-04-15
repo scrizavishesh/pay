@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createOrder, getAgentOrders, getAgents, getAllOrders, Orderapproval } from '../utils/Constants';
 import toast from 'react-hot-toast';
+import ReactPaginate from 'react-js-pagination';
 import { Button, Modal } from 'react-bootstrap';
 
 
@@ -19,12 +20,20 @@ const Approval_Agent = () => {
     const [remarkValidError, setRemarkValidError] = useState(false);
     const [remarkIsRequiredError, setRemarkIsRequiredlError] = useState(false);
     const [order_id, setOrder_id] = useState("");
-    const [agent, setAgent] = useState("")
+    const [agent, setAgent] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
     const handleCloseModal = () => setShowModal(false);
+
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [searchTerm, currentPage]);
 
     const fetchData = async () => {
         // try {
@@ -37,7 +46,7 @@ const Approval_Agent = () => {
         // }
 
         try {
-            const orderResponse = await getAllOrders();
+            const orderResponse = await getAllOrders(searchTerm, currentPage);
             if (orderResponse?.status === 200 && orderResponse?.data?.results) {
                 const filteredOrders = orderResponse.data.results.filter(order => order.agent === profile[0]?.id);
                 setCreateOrder(filteredOrders);
@@ -45,6 +54,10 @@ const Approval_Agent = () => {
         } catch (err) {
             console.log(err);
         }
+    };
+
+    const handleInputChange = (value) => {
+        setSearchTerm(value);
     };
 
     const handleUTR = (value) => {
@@ -137,7 +150,7 @@ const Approval_Agent = () => {
                             <div className="card-header">
                                 <div className="row justify-content-end">
                                     <div className="col-lg-4 col-md-4">
-                                        <input type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
+                                        <input value={searchTerm} onChange={(e) => handleInputChange(e.target.value)} type="search" className="form-control" placeholder="Search for customer, email, phone, status or something" />
                                     </div>
                                 </div>
                             </div>
@@ -239,15 +252,19 @@ const Approval_Agent = () => {
                                 </div>
                             </div>
                             <div className="card-footer d-md-flex justify-content-between align-items-center">
-                                <span>Showing 1 to 8 of 12 entries</span>
+                                <span>Showing {(currentPage - 1) * 8 + 1} to {Math.min(currentPage * 8, totalItems)} of {totalItems} entries</span>
                                 <nav className="mt-2 mt-md-0">
-                                    <ul className="pagination mb-0">
-                                        <li className="page-item"><a className="page-link" href="#!">Previous</a></li>
-                                        <li className="page-item active"><a className="page-link" href="#!">1</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">2</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">3</a></li>
-                                        <li className="page-item"><a className="page-link" href="#!">Next</a></li>
-                                    </ul>
+                                    <ReactPaginate
+                                        activePage={currentPage}
+                                        itemsCountPerPage={8}
+                                        totalItemsCount={totalItems}
+                                        pageRangeDisplayed={8}
+                                        onChange={(e) => handlePageChange(e)}
+                                        prevPageText="Previous"
+                                        nextPageText="Next"
+                                        itemClass="page-item"
+                                        linkClass="page-link"
+                                    />
                                 </nav>
                             </div>
                         </div>
