@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react'; // Imported useState only as it's used in the component
-import { CreateUsers, getAgentsById, UpdatesUsers } from '../utils/Constants'; // Corrected import statement
+import React, { useState } from 'react'; // Imported useState only as it's used in the component
+import { CreateUsers } from '../utils/Constants'; // Corrected import statement
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 import toast from 'react-hot-toast';
-import { useNavigate, useParams } from 'react-router-dom';
 
-const Update_user = () => {
-
-    const ids = useParams();
-    const navigate = useNavigate();
+const CreateUser = () => {
 
     const [username, setUsername] = useState(""); // Corrected state variable name
     const [userNameValidError, setUserNameValidError] = useState(false);
     const [userNameIsRequiredError, setUserNameIsRequiredError] = useState(false); // Corrected state variable name
+
+    const [password, setPassword] = useState("");
+    const [passwordValidError, setPasswordValidError] = useState(false);
+    const [passwordIsRequiredError, setPasswordIsRequiredError] = useState(false); // Corrected state variable name
+    const [isShowPassword, setIsShowPassword] = useState(false);
 
     const [email, setEmail] = useState("");
     const [emailValidError, setEmailValidError] = useState(false);
@@ -22,31 +24,6 @@ const Update_user = () => {
 
     const [selectedRole, setSelectedRole] = useState('agent');
     const [selectedRoleIsRequiredError, setSelectedRoleIsRequiredError] = useState(false);
-
-
-    const [userDetails, setUserDetails] = useState("")
-
-    useEffect(() => {
-        getEmployess();
-    }, [])
-
-
-    const getEmployess = async () => {
-        const response = await getAgentsById(ids?.id);
-        console.log(response, "response")
-        try {
-            if (response?.status === 200) {
-                setUserDetails(response?.data)
-                setUsername(response?.data?.username)
-                setEmail(response?.data?.email)
-                setUpi(response?.data?.upi_id)
-                // setSelectedRole(response?.data?.selectedRole)
-            } else {
-            }
-        } catch (err) {
-            toast.error(err?.message);
-        }
-    };
 
     const handleUPI = (value) => {
         setUpi(value); // Corrected state variable name
@@ -93,8 +70,30 @@ const Update_user = () => {
         }
     };
 
+    const handleNewPass = (value) => {
+        setPassword(value);
+        const regex =
+            /^(?=^.{8,}$)((?=.*\d)(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+        if (value === "") {
+            setPasswordValidError(false);
+            setPasswordIsRequiredError(true); // Corrected state variable name
+        } else if (regex.test(value) === false) {
+            setPasswordValidError(true);
+            setPasswordIsRequiredError(false); // Corrected state variable name
+        } else {
+            setPasswordValidError(false);
+            setPasswordIsRequiredError(false); // Corrected state variable name
+        }
+    };
 
-
+    const handleShowPassword = (event, type) => {
+        event.preventDefault();
+        if (type === "show") {
+            setIsShowPassword(true);
+        } else {
+            setIsShowPassword(false);
+        }
+    };
 
     const handleRoleChange = (value) => {
         setSelectedRole(value);
@@ -107,14 +106,18 @@ const Update_user = () => {
         if (username === "" || !username) {
             setUserNameIsRequiredError(true);
         }
+        if (password === "" || !password) {
+            setPasswordIsRequiredError(true);
+        }
         if (selectedRole === "" || !selectedRole) {
             setSelectedRoleIsRequiredError(true);
         }
 
-        if (email && username && selectedRole) { // Changed the condition to check all fields
+        if (email && username && password && selectedRole) { // Changed the condition to check all fields
             const formData = new FormData();
             formData.append("username", username);
             formData.append("email", email);
+            formData.append("password", password);
             formData.append("is_superadmin", false);
             if (selectedRole === 'admin') {
                 formData.append('is_admin', true);
@@ -125,15 +128,15 @@ const Update_user = () => {
             }
             formData.append("upi_id", upi);
             try {
-                const response = await UpdatesUsers(formData, ids?.id);
-                console.log(response, "updateregister")
-                if (response.status === 200) {
+                const response = await CreateUsers(formData);
+                if (response.status === 201) {
                     setEmail("");
                     setUsername("");
+                    setPassword("");
                     setUpi("");
                     setSelectedRole("");
-                    toast.success("User Updated Successfully");
-                    navigate("/userlist")
+                    toast.success("User Created Successfully");
+
                 }
             } catch (err) {
                 console.log(err);
@@ -142,8 +145,6 @@ const Update_user = () => {
 
         }
     };
-
-
 
     return (
         <>
@@ -164,7 +165,7 @@ const Update_user = () => {
                                     <div className='row'>
                                         <div className="col-sm-6 mb-3 mb-lg-0">
                                             <label className="form-label">Username *</label>
-                                            <input onChange={(e) => handleUserName(e.target.value)}  value={username} type="text" className="form-control" placeholder="Enter Username" required="" />
+                                            <input onChange={(e) => handleUserName(e.target.value)} value={username} type="text" className="form-control" placeholder="Enter Username" required="" />
                                             {userNameIsRequiredError && (
                                                 <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
                                                     UserName is required
@@ -178,7 +179,7 @@ const Update_user = () => {
                                         </div>
                                         <div className="col-sm-6 mb-3 mb-lg-0">
                                             <label className="form-label">Email *</label>
-                                            <input type="text" className="form-control" value={email}  onChange={(e) => handleEmail(e.target.value)} placeholder="Email" required="" />
+                                            <input type="text" className="form-control" value={email} onChange={(e) => handleEmail(e.target.value)} placeholder="Email" required="" />
                                             {emailIsRequiredError && (
                                                 <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
                                                     Email is required
@@ -191,28 +192,61 @@ const Update_user = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <div className='row'>
-                                        <div className="col-sm-6 mb-3 mb-lg-0">
-                                            <label className="form-label">UPI Id *</label>
-                                            <input type="text" onChange={(e) => handleUPI(e.target.value)} value={upi} className="form-control" placeholder="upi id" required="" />
-                                        </div>
-                                        <div className="col-sm-6 mb-3 mb-lg-0">
-                                            <label className="form-label">Select Role *</label>
-                                            <select onChange={(e) => handleRoleChange(e.target.value)} value={selectedRole}  class="form-select">
-                                                <option>-----Select Role-----</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="agent">Agent</option>
-                                            </select>
-                                            {selectedRoleIsRequiredError && (
-                                                <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
-                                                    Select Role is required
-                                                </div>
-                                            )}
-                                        </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Password *</label>
+                                        <input onChange={(e) => handleNewPass(e.target.value)} value={password} type={!isShowPassword ? "password" : "text"} className="form-control" placeholder='password' />
+                                        {/* <span >
+                                                <button className="btn  ms-n10 rounded-0 rounded-end" type="button">
+                                                    {!isShowPassword ? (
+                                                        <FaEye
+                                                            onClick={(e) => handleShowPassword(e, "show")}
+                                                        />
+                                                    ) : (
+                                                        <FaEyeSlash
+                                                            onClick={(e) => handleShowPassword(e, "hide")}
+                                                        />
+                                                    )}
+                                                </button>
+                                            </span> */}
+                                        {passwordValidError && (
+                                            <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }} >
+                                                Password at least 8 characters in length.
+                                                <br />
+                                                Lowercase letters (a-z)
+                                                <br />
+                                                Uppercase letters (A-Z)
+                                                <br />
+                                                Numbers (0-9)
+                                                <br />
+                                                Special characters ($@$!%*?&) <br />
+                                            </div>
+                                        )}
+                                        {passwordIsRequiredError && (
+                                            <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
+                                                Password is required
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="mt-3">
+                                        <label className="form-label">UPI Id *</label>
+                                        <input type="text" onChange={(e) => handleUPI(e.target.value)} value={upi} className="form-control" placeholder="upi id" required="" />
+                                    </div>
+                                    <div className="mt-3">
+                                        <label className="form-label">Select Role *</label>
+                                        <select onChange={(e) => handleRoleChange(e.target.value)} value={selectedRole} class="form-select">
+                                            <option>-----Select Role-----</option>
+                                            <option value="admin">Creator</option>
+                                            <option value="agent">Approval</option>
+                                        </select>
+                                        {selectedRoleIsRequiredError && (
+                                            <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
+                                                Select Role is required
+                                            </div>
+                                        )}
                                     </div>
                                     <div className="d-grid mb-3 mt-3"> {/* Corrected class to className */}
                                         <a type='button' onClick={register} className="btn btn-primary">
-                                            Update user
+                                            Create user
                                         </a>
                                     </div>
                                 </form>
@@ -226,5 +260,4 @@ const Update_user = () => {
     )
 }
 
-export default Update_user;
-
+export default CreateUser;

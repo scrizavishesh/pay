@@ -58,6 +58,16 @@ export const getAgents = async (pageNo) => {
   }
 }
 
+export const getCreatorAgents = async () => {
+  axios.defaults.headers.common["Authorization"] = bearerToken;
+  var response = await axios.get(`${API_URL}/api/users/created-by`, );
+  if (response) {
+    return response;
+  } else {
+    return [];
+  }
+}
+
 export const getAgentsById = async (id) => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
   var response = await axios.get(`${API_URL}/api/users/${id}`, );
@@ -159,7 +169,7 @@ export const CheckOutAgent = async () => {
 export const DownloadOrders = async (start_Date, end_date, id) => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
 
-  var response = await axios.get(`${API_URL}/api/orders/download-orders/?start_date=${start_Date}&end_date=${end_date}`,);
+  var response = await axios.get(`${API_URL}/api/orders/download-orders/?start_date=${start_Date}&end_date=${end_date}&id=${id}`,);
   if (response) {
     return response;
   } else {

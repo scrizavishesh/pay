@@ -3,6 +3,7 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
 import { DownloadOrders, getAgents } from '../utils/Constants';
 import { Document, Page, pdfjs } from 'react-pdf';
+import { CSVLink } from 'react-csv';
 import PdfViewer from './PdfViewer';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -13,7 +14,11 @@ const Download = () => {
     const [endDate, setEndDate] = useState(null);
     const [showAgents, setShowAgents] = useState([]);
     const [agent, setAgent] = useState('');
-    const [pdfBase64, setPdfBase64] = useState(null);
+    const [csvData, setCsvData] = useState([]);
+    const [tableData, setTableData] = useState([]);
+    console.log(tableData)
+    // const [pdfBase64, setPdfBase64] = useState(null);
+    const [currentpage, setcurrentpage] = useState('')
     // const [numPages, setNumPages] = useState(null);
     // const [pageNumber, setPageNumber] = useState(1);
 
@@ -42,7 +47,10 @@ const Download = () => {
                 const response = await DownloadOrders(startDate, endDate, agent);
                 console.log(response);
                 if (response?.status === 200) {
-                    setPdfBase64(response?.data?.pdf_base64);
+                    const rows = response?.data?.split('\n').map(row => row.split(','));
+                    setCsvData(rows);
+                    // Set table data by skipping the header row
+                    setTableData(rows.slice(1));
                 }
             } catch (err) {
                 console.log(err);
@@ -57,8 +65,8 @@ const Download = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const agentsResponse = await getAgents();
-                if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
+                const agentsResponse = await getAgents(currentpage);
+                if (agentsResponse?.status === 200) setShowAgents(agentsResponse?.data?.results);
             } catch (err) {
                 console.log(err);
             }
@@ -132,9 +140,84 @@ const Download = () => {
                                         )}
                                         {!pdfBase64 && <p>Loading PDF...</p>}
                                     </div> */}
-                                    <div>
-                                        <PdfViewer pdfBase64={pdfBase64} />
-                                    </div>
+
+
+                                    {
+                                        tableData.length !== 0 && (
+                                            <>
+                                                <div className='d-flex justify-content-end mb-3'>
+                                                    <CSVLink className='btn btn-secondary' data={csvData} filename={"data.csv"}>
+                                                        Download CSV File
+                                                    </CSVLink>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        {/* <!-- card --> */}
+                                                        <div class="card mb-4">
+                                                            <div class="card-body">
+                                                                <div class="table-responsive table-card">
+                                                                    <table class="table text-nowrap mb-0 table-centered table-hover">
+                                                                        <thead class="table-light">
+                                                                            <tr>
+                                                                                <th></th>
+                                                                                <th class="ps-1">Order ID</th>
+                                                                                <th>Client Name</th>
+                                                                                <th>UTR</th>
+                                                                                <th>Approval Status</th>
+                                                                                <th>Agent Username</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            {tableData.length !== 0 ? (
+                                                                                tableData.map((row, index) => (
+                                                                                    <tr key={index}>
+                                                                                        <td className="pe-0">
+                                                                                            <div className="form-check">
+                                                                                                <input className="form-check-input" type="checkbox" value="" id={`contactCheckbox${index}`} />
+                                                                                                <label className="form-check-label" htmlFor={`contactCheckbox${index}`}>
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        {row.map((cell, cellIndex) => (
+                                                                                            <td key={cellIndex} className="ps-1">
+                                                                                                <a href="#!">{cell}</a>
+                                                                                            </td>
+                                                                                        ))}
+                                                                                    </tr>
+                                                                                ))
+                                                                            ) : (
+                                                                                <tr>
+                                                                                    <td style={{ textAlign: "center" }} colSpan={6}>
+                                                                                        No data found
+                                                                                    </td>
+                                                                                </tr>
+                                                                            )}
+                                                                        </tbody>
+
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            {/* <div class="card-footer d-md-flex justify-content-between align-items-center">
+                                                                <span>Showing 1 to 8 of 12 entries</span>
+                                                                <nav class="mt-2 mt-md-0">
+                                                                    <ul class="pagination mb-0">
+                                                                        <li class="page-item"><a class="page-link" href="#!">Previous</a></li>
+                                                                        <li class="page-item"><a class="page-link active" href="#!">1</a></li>
+                                                                        <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                                                                        <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                                                                        <li class="page-item"><a class="page-link" href="#!">Next</a></li>
+                                                                    </ul>
+                                                                </nav>
+                                                            </div> */}
+                                                        </div>
+                                                        <CSVLink className='btn btn-secondary' data={csvData} filename={"data.csv"}>
+                                                            Download CSV
+                                                        </CSVLink>
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>
