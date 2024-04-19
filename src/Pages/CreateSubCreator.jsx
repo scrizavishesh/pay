@@ -113,19 +113,21 @@ const CreateSubCreator = () => {
             setSelectedRoleIsRequiredError(true);
         }
 
-        if (email && username && password && selectedRole) { // Changed the condition to check all fields
-            const formData = new FormData();
-            formData.append("username", username);
-            formData.append("email", email);
-            formData.append("password", password);
-            formData.append("is_superadmin", false);
-            formData.append("is_creator", true);
-            formData.append('is_admin', false);
-            formData.append('is_agent', false);
-
-            formData.append("upi_id", upi);
+        if (email && username && password && selectedRole) {
+            const data = {
+                "username": username,
+                "email": email,
+                "password": password,
+                "is_superadmin": false,
+                "is_creator":true,
+                "is_admin": false,
+                "is_agent": false,
+                "upi_id": "8209019669@paytm"
+              };
+            
             try {
-                const response = await CreateUsers(formData);
+                const response = await CreateUsers(data);
+                console.log(response, "sub Creator")
                 if (response.status === 201) {
                     setEmail("");
                     setUsername("");
@@ -241,7 +243,7 @@ const CreateSubCreator = () => {
                                     </div>
                                     <div className="d-grid mb-3 mt-3"> {/* Corrected class to className */}
                                         <a type='button' onClick={register} className="btn btn-primary">
-                                            Create user
+                                            Create Sub Creator
                                         </a>
                                     </div>
                                 </form>

@@ -244,9 +244,40 @@ const Sidebar = () => {
 
 
 
-    const handleNavLinkClick = (link) => {
+    const handleDasLinkClick = (link) => {
         setActiveLink(link);
     };
+
+    const handlereportLinkClick = (link) => {
+        setActiveLink(link);
+    };
+
+    const handleSubCreatorLinkClick = (link) => {
+        setActiveLink(link);
+    };
+
+    const handleSubCreatorListLinkClick = (link) => {
+        setActiveLink(link);
+    };
+
+    const handleUpdateLinkClick = (link) => {
+        setActiveLink(link);
+    };
+
+    const handleCreUserLinkClick = (link) => {
+        setActiveLink(link);
+    };
+
+    const handleUseListLinkClick = (link) => {
+        setActiveLink(link);
+    };
+
+    const handleDownReportsLinkClick = (link) => {
+        setActiveLink(link);
+    };
+
+
+
 
 
 
@@ -268,14 +299,17 @@ const Sidebar = () => {
                                 <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style={{ height: "100%", overflow: "hidden scroll" }}>
                                     <div class="simplebar-content" style={{ padding: "0px" }}>
                                         {/* <!-- Brand logo --> */}
-                                        <div className='mb-5'>
-                                            <img src="/logo.png" alt="" width={250} />
+                                        <div className='mb-5' style={{ backgroundColor: "#fff" }}>
+                                            <img src="/logo.png" alt="" width={195} />
                                         </div>
                                         {/* <!-- Navbar nav --> */}
                                         <ul class="navbar-nav flex-column" id="sideNavbar">
-                                            <li class="nav-item">
-                                                <Link to="/" class="nav-link has-arrow">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                            <li class="nav-item ">
+                                                <Link to="/"
+                                                    className={`nav-link has-arrow ${activeLink === '/' ? 'active' : ''}`}
+                                                    onClick={() => handleDasLinkClick('/')}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#ff914d" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2m0 2a8 8 0 1 0 0 16a8 8 0 0 0 0-16m3.833 3.337a.596.596 0 0 1 .763.067a.59.59 0 0 1 .063.76c-2.18 3.046-3.38 4.678-3.598 4.897a1.5 1.5 0 0 1-2.122-2.122c.374-.373 2.005-1.574 4.894-3.602M17.5 11a1 1 0 1 1 0 2a1 1 0 0 1 0-2m-11 0a1 1 0 1 1 0 2a1 1 0 0 1 0-2m2.318-3.596a1 1 0 1 1-1.414 1.414a1 1 0 0 1 1.414-1.414M12 5.5a1 1 0 1 1 0 2a1 1 0 0 1 0-2" /></svg>
                                                     Dashboard
                                                 </Link>
                                             </li>
@@ -283,28 +317,37 @@ const Sidebar = () => {
                                             {
                                                 role && (
                                                     <>
-                                                    <li class="nav-item">
-                                                        <Link to="/create_sub_creator" class="nav-link has-arrow">
-                                                            {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><title>Pay Out</title><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg> */}
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#0a0a0a" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46" /></svg>
-                                                            Create Sub Creator
-                                                        </Link>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <Link to="/sub_creator_list" class="nav-link has-arrow">
-                                                            {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><title>Pay Out</title><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg> */}
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#0a0a0a" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46" /></svg>
-                                                            Sub Creator List
-                                                        </Link>
-                                                    </li>
+                                                        <li class="nav-item">
+                                                            <Link to="/create_sub_creator"
+                                                                className={`nav-link has-arrow ${activeLink === '/create_sub_creator' ? 'active' : ''}`}
+                                                                onClick={() => handleSubCreatorLinkClick('/create_sub_creator')}
+                                                            >
+                                                                {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><title>Pay Out</title><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg> */}
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#0a0a0a" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46" /></svg>
+                                                                Create Sub Creator
+                                                            </Link>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <Link to="/sub_creator_list"
+                                                                className={`nav-link has-arrow ${activeLink === '/sub_creator_list' ? 'active' : ''}`}
+                                                                onClick={() => handleSubCreatorListLinkClick('/sub_creator_list')}
+                                                            >
+                                                                {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><title>Pay Out</title><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg> */}
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#0a0a0a" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46" /></svg>
+                                                                Sub Creator List
+                                                            </Link>
+                                                        </li>
                                                     </>
-                                                    
+
                                                 )
                                             }
                                             {
                                                 updateRole && (
                                                     <li class="nav-item">
-                                                        <Link to="/updateuser" class="nav-link has-arrow">
+                                                        <Link to="/updateuser" 
+                                                        className={`nav-link has-arrow ${activeLink === '/updateuser' ? 'active' : ''}`}
+                                                        onClick={() => handleUpdateLinkClick('/updateuser')}
+                                                        >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#0a0a0a" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46" /></svg>
                                                             Update User
                                                         </Link>
@@ -314,27 +357,42 @@ const Sidebar = () => {
                                             {superAdmin && (
                                                 <>
                                                     <li class="nav-item">
-                                                        <Link to="/create_creator" class="nav-link has-arrow">
+                                                        <Link to="/create_creator" 
+                                                        className={`nav-link has-arrow ${activeLink === '/create_creator' ? 'active' : ''}`}
+                                                        onClick={() => handleCreUserLinkClick('/create_creator')}
+                                                        >
                                                             {/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><title>Pay Out</title><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path></svg> */}
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#0a0a0a" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46" /></svg>
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path stroke="#ff914d" d="M12 3c2.21 0 4 1.79 4 4s-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4m4 10.54c0 1.06-.28 3.53-2.19 6.29L13 15l.94-1.88c-.62-.07-1.27-.12-1.94-.12s-1.32.05-1.94.12L11 15l-.81 4.83C8.28 17.07 8 14.6 8 13.54c-2.39.7-4 1.96-4 3.46v4h16v-4c0-1.5-1.6-2.76-4-3.46" /></svg>
                                                             Create User
                                                         </Link>
                                                     </li>
 
                                                     <li class="nav-item">
-                                                        <Link to="/userlist" class="nav-link has-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 256 256" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#ff914d" d="M152 80a8 8 0 0 1 8-8h88a8 8 0 0 1 0 16h-88a8 8 0 0 1-8-8m96 40h-88a8 8 0 0 0 0 16h88a8 8 0 0 0 0-16m0 48h-64a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16m-96.25 22a8 8 0 0 1-5.76 9.74a7.55 7.55 0 0 1-2 .26a8 8 0 0 1-7.75-6c-6.16-23.94-30.34-42-56.25-42s-50.09 18.05-56.25 42a8 8 0 0 1-15.5-4c5.59-21.71 21.84-39.29 42.46-48a48 48 0 1 1 58.58 0c20.63 8.71 36.88 26.29 42.47 48M80 136a32 32 0 1 0-32-32a32 32 0 0 0 32 32" /></svg>
+                                                        <Link to="/userlist" 
+                                                        className={`nav-link has-arrow ${activeLink === '/userlist' ? 'active' : ''}`}
+                                                        onClick={() => handleUseListLinkClick('/userlist')}
+                                                        >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 256 256" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#ff914d" d="M152 80a8 8 0 0 1 8-8h88a8 8 0 0 1 0 16h-88a8 8 0 0 1-8-8m96 40h-88a8 8 0 0 0 0 16h88a8 8 0 0 0 0-16m0 48h-64a8 8 0 0 0 0 16h64a8 8 0 0 0 0-16m-96.25 22a8 8 0 0 1-5.76 9.74a7.55 7.55 0 0 1-2 .26a8 8 0 0 1-7.75-6c-6.16-23.94-30.34-42-56.25-42s-50.09 18.05-56.25 42a8 8 0 0 1-15.5-4c5.59-21.71 21.84-39.29 42.46-48a48 48 0 1 1 58.58 0c20.63 8.71 36.88 26.29 42.47 48M80 136a32 32 0 1 0-32-32a32 32 0 0 0 32 32" /></svg>
                                                             User List
                                                         </Link>
                                                     </li>
                                                     <li class="nav-item">
-                                                        <Link to="/download" class="nav-link has-arrow"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><g ><path d="M25 5h-.17v2H25a1 1 0 0 1 1 1v20a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h.17V5H7a3 3 0 0 0-3 3v20a3 3 0 0 0 3 3h18a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3" /><path d="M23 3h-3V0h-8v3H9v6h14zm-2 4H11V5h3V2h4v3h3z" /><path d="M10 13h12v2H10zm0 5h12v2H10zm0 5h12v2H10z" class="ouiIcon__fillSecondary" /></g></svg>
+                                                        <Link to="/download" 
+                                                        className={`nav-link has-arrow ${activeLink === '/' ? 'active' : ''}`}
+                                                        onClick={() => handleDownReportsLinkClick('/')}
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><g fill="none" stroke="#ff914d" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5.697M18 14v4h4m-4-7V7a2 2 0 0 0-2-2h-2" /><path d="M8 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2m6 13a4 4 0 1 0 8 0a4 4 0 1 0-8 0m-6-7h4m-4 4h3" /></g></svg>
                                                             Download Reports
                                                         </Link>
                                                     </li>
                                                 </>
                                             )}
                                             <li class="nav-item">
-                                                <Link to="/manual_order" class="nav-link has-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#ff914d" d="m16 11.78l4.24-7.33l1.73 1l-5.23 9.05l-6.51-3.75L5.46 19H22v2H2V3h2v14.54L9.5 8z" /></svg>
+                                                <Link to="/manual_order"
+                                                    className={`nav-link has-arrow ${activeLink === '/manual_order' ? 'active' : ''}`}
+                                                    onClick={() => handlereportLinkClick('/manual_order')}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><path fill="#ff914d" d="m16 11.78l4.24-7.33l1.73 1l-5.23 9.05l-6.51-3.75L5.46 19H22v2H2V3h2v14.54L9.5 8z" /></svg>
                                                     Report
                                                 </Link>
                                             </li>
