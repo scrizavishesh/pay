@@ -13,6 +13,7 @@ const Admin_Order = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
+    const [page, setPage] = useState("")
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
@@ -55,8 +56,8 @@ const Admin_Order = () => {
 
             }
 
-            const agentsResponse = await getAgents();
-
+            const agentsResponse = await getAgents(page);
+            console.log(agentsResponse, "Agent")
             if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data?.results);
         } catch (err) {
             console.log(err);

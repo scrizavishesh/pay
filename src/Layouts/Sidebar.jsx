@@ -378,8 +378,8 @@ const Sidebar = () => {
                                                     </li>
                                                     <li class="nav-item">
                                                         <Link to="/download" 
-                                                        className={`nav-link has-arrow ${activeLink === '/' ? 'active' : ''}`}
-                                                        onClick={() => handleDownReportsLinkClick('/')}
+                                                        className={`nav-link has-arrow ${activeLink === '/download' ? 'active' : ''}`}
+                                                        onClick={() => handleDownReportsLinkClick('/download')}
                                                         >
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home nav-icon me-2 icon-xxs"><g fill="none" stroke="#ff914d" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5.697M18 14v4h4m-4-7V7a2 2 0 0 0-2-2h-2" /><path d="M8 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2m6 13a4 4 0 1 0 8 0a4 4 0 1 0-8 0m-6-7h4m-4 4h3" /></g></svg>
                                                             Download Reports

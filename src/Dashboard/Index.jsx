@@ -98,8 +98,8 @@ const Index = () => {
                                                 checked={isChecked}
                                                 onChange={isChecked ? CheckOut : CheckIn} // Toggle function based on isChecked state
                                             />
-                                            <label className="form-check-label" htmlFor="flexSwitchStock">
-                                                {isChecked ? 'In Stock' : 'Out of Stock'}
+                                            <label className="form-check-label" htmlFor="flexSwitchStock" style={{color: "#fff"}}>
+                                                {isChecked ? 'Check In' : 'Chec Out'}
                                             </label>
                                         </div>
                                     )
@@ -136,8 +136,8 @@ const Index = () => {
                     </div>
                 </div>
                 <Sidebar />
-                <div id="app-content">
-                    <div class="app-content-area">
+                <div id="app-content" style={{backgroundColor: "#fff"}}>
+                    <div class="app-content-area" >
                         <PageRouter />
                     </div>
                 </div>
