@@ -32,7 +32,8 @@ const StyledContainer = styled.div`
 
 const ReportList = () => {
 
-    const [Employees, setEmployees] = useState([])
+    const [Employees, setEmployees] = useState([]);
+    const [currecnt, setCurrecnt] = useState("")
 
     useEffect(() => {
         getEmployess();
@@ -40,7 +41,7 @@ const ReportList = () => {
 
 
     const getEmployess = async (e) => {
-        const response = await getAgents();
+        const response = await getAgents(currecnt);
         try {
             if (response?.status === 200) {
                 toast.success("Gets all users successfully");
