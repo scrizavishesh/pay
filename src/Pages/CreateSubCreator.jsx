@@ -2,8 +2,11 @@ import React, { useState } from 'react'; // Imported useState only as it's used 
 import { CreateUsers } from '../utils/Constants'; // Corrected import statement
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const CreateSubCreator = () => {
+
+    const navigate = useNavigate()
 
     const [username, setUsername] = useState(""); // Corrected state variable name
     const [userNameValidError, setUserNameValidError] = useState(false);
@@ -129,6 +132,7 @@ const CreateSubCreator = () => {
                 const response = await CreateUsers(data);
                 console.log(response, "sub Creator")
                 if (response.status === 201) {
+                    navigate('/sub_creator_list')
                     setEmail("");
                     setUsername("");
                     setPassword("");
