@@ -47,6 +47,7 @@ const Approval_Agent = () => {
 
         try {
             const orderResponse = await getAllOrders(searchTerm, currentPage);
+            console.log(orderResponse, "hello")
             if (orderResponse?.status === 200 && orderResponse?.data?.results) {
                 const filteredOrders = orderResponse.data.results.filter(order => order.agent === profile[0]?.id);
                 setTotalItems(orderResponse?.data?.count);
