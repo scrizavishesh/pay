@@ -18,15 +18,28 @@ const Index = () => {
     }, []);
 
     const profile = JSON.parse(localStorage.getItem("data"));
+    const checked = localStorage.getItem("checked");
 
-    const [isChecked, setIsChecked] = useState(false); // Initialize to 'Out of Stock'
+    useEffect(() => {
+        if(checked === "checked_in"){
+            setIsChecked(true);
+        }
+      
+    }, [])
+    
+
+
+    const [isChecked, setIsChecked] = useState(false); 
+
 
     const CheckIn = async () => {
+
         try {
             const response = await CheckInAgent();
             console.log(response, "Check In");
             if (response?.status === 200) {
                 toast.success("Checked In Successfully");
+                localStorage.setItem("checked", response?.data?.status)
                 setIsChecked(true);
             }
         } catch (err) {
@@ -39,6 +52,7 @@ const Index = () => {
             const response = await CheckOutAgent();
             if (response?.status === 200) {
                 toast.success("Checked Out Successfully");
+                localStorage.removeItem("checked")
                 setIsChecked(false);
             }
         } catch (err) {
