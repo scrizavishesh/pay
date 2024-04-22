@@ -68,9 +68,9 @@ export const getAgentsfor = async () => {
   }
 }
 
-export const getCreatorAgents = async () => {
+export const getCreatorAgents = async (pageNo) => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
-  var response = await axios.get(`${API_URL}/api/users/created-by`, );
+  var response = await axios.get(`${API_URL}/api/users/created-by/?page=${pageNo}`, );
   if (response) {
     return response;
   } else {
