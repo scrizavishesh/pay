@@ -50,7 +50,6 @@ const SubCreatorList = () => {
 
     const getEmployess = async (e) => {
         const response = await getCreatorAgents();
-        console.log(response, "resuser list")
         try {
             if (response?.status === 200) {
                 toast.success("Gets all Sub Creators successfully");
