@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createOrder, getAgents, getAllOrders } from '../utils/Constants';
+import { createOrder, getAgents, getAgentsfor, getAllOrders } from '../utils/Constants';
 import toast from 'react-hot-toast';
 import ReactPaginate from 'react-js-pagination';
 
@@ -56,9 +56,9 @@ const Admin_Order = () => {
 
             }
 
-            const agentsResponse = await getAgents(page);
-            console.log(agentsResponse, "Agent")
-            if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data?.results);
+            const agentsResponse = await getAgentsfor();
+            console.log(agentsResponse, "online Agent")
+            if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
         } catch (err) {
             console.log(err);
         }
