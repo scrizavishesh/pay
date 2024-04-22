@@ -54,12 +54,6 @@ const Login = () => {
     };
 
     useEffect(() => {
-        if (token) {
-            toast.error(
-                "your have to logout first"
-            );
-            // navigate(`/dashboard`);
-        }
         userSuccess(tokenData);
     }, [tokenData])
 

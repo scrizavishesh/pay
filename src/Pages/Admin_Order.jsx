@@ -49,9 +49,8 @@ const Admin_Order = () => {
         try {
             const orderResponse = await getAllOrders(searchTerm, currentPage);
             console.log(orderResponse, "Orderresponse")
-            if (orderResponse?.status === 200 && orderResponse?.data?.results) {
-                const filteredOrders = orderResponse.data.results.filter(order => order.client_name === profile[0]?.username);
-                setCreateOrder(filteredOrders);
+            if (orderResponse?.status === 200) {
+                setCreateOrder(orderResponse?.data?.results);
                 setTotalItems(orderResponse?.data?.count);
 
             }
