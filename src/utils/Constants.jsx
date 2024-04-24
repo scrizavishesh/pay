@@ -99,9 +99,9 @@ export const createFund = async (requestData, orderId, recId, id) => {
 }
 
 
-export const getDashboardStatistic = async () => {
+export const getDashboardStatistic = async (day, startDate, endDate) => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
-  var response = await axios.get(`${API_URL}/api/statistics/payin/`, );
+  var response = await axios.get(`${API_URL}/api/statistics/payin/?date_filter=${day}&start_date=${startDate}&end_date=${endDate}`, );
   if (response) {
     return response;
   } else {

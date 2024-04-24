@@ -50,6 +50,7 @@ const Index = () => {
     const CheckOut = async () => {
         try {
             const response = await CheckOutAgent();
+            console.log(response, "Check out");
             if (response?.status === 200) {
                 toast.success("Checked Out Successfully");
                 localStorage.removeItem("checked")

@@ -2,26 +2,42 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { getDashboardStatistic } from '../utils/Constants';
 import toast from 'react-hot-toast';
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/themes/light.css";
 
 const DashboardMain = () => {
 
   const navigate = useNavigate();
 
   const [Statics, setStatics] = useState([]);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const token = localStorage.getItem("token");
+  const [activeButton, setActiveButton] = useState("today");
+  const handleButtonClick = (buttonName) => {
+    setActiveButton(buttonName);
+  };
+
+  const handleDateChange = (dates) => {
+    setStartDate(formatDate(dates[0]));
+    setEndDate(formatDate(dates[1]));
+  };
+
+  const formatDate = (date) => {
+    if (!date) return null;
+
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // Month is 0-indexed
+    const day = date.getDate();
+
+    return `${year}-${month}-${day}`;
+  };
 
   useEffect(() => {
-    if (!token) {
-      toast.error(
-        "your session has been expired ...kindly login again.",
-        "yellow"
-      );
-      navigate(`/`);
-    }
     const DashData = async () => {
       try {
-        const dashResponse = await getDashboardStatistic();
+        const dashResponse = await getDashboardStatistic(activeButton, startDate, endDate);
         if (dashResponse?.status === 200)
           setStatics(dashResponse?.data);
 
@@ -30,21 +46,75 @@ const DashboardMain = () => {
       }
     };
     DashData();
-  }, []);
+  }, [activeButton, startDate, endDate]);
 
   return (
     <>
       <div className="container-fluid">
         <div>
           <div class="card h-100">
-            <div class="card-header d-flex justify-content-between align-items-center ">
-              <div class="row">
-                <div class="col-lg-12 col-md-12 col-12">
-                  <div class="d-flex justify-content-between align-items-center mb-5">
-                    <h3 class="mb-0 ">Pay In Statistics</h3>
-                  </div>
-                </div>
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Pay In Statistics</h4>
+              <div className="col-md-6 text-lg-end mb-3">
+                <a
+                  href="#!"
+                  className={`btn btn-light me-1 ${activeButton === "today" ? "active" : ""
+                    }`}
+                  style={
+                    activeButton === "today"
+                      ? {
+                        background: "#1961A3",
+                        border: "1px solid #DDDDEB",
+                        color: "#fff",
+                      }
+                      : {}
+                  }
+                  onClick={() => handleButtonClick("today")}
+                >
+                  Today
+                </a>
+                <a
+                  href="#!"
+                  className={`btn btn-light me-1 ${activeButton === "yesterday" ? "active" : ""
+                    }`}
+                  style={
+                    activeButton === "yesterday"
+                      ? {
+                        background: "#1961A3",
+                        border: "1px solid #DDDDEB",
+                        color: "#fff",
+                      }
+                      : {}
+                  }
+                  onClick={() => handleButtonClick("yesterday")}
+                >
+                  Yesterday
+                </a>
+                <Flatpickr
+                  className={`btn btn-light me-1 ${activeButton === "custom" ? "active" : ""
+                    }`}
+                  style={
+                    activeButton === "custom"
+                      ? {
+                        background: "#1961A3",
+                        border: "1px solid #DDDDEB",
+                        color: "#fff",
+                      }
+                      : {}
+                  }
+                  placeholder="Select Date"
+                  value={[startDate, endDate]}
+                  options={{
+                    mode: 'range',
+                    dateFormat: 'Y-n-j', // Adjusted date format
+                  }}
+                  onClick={() => handleButtonClick("custom")}
+                  onChange={handleDateChange}
+                  
+                />
               </div>
+
+
             </div>
             <div class="card-body">
               <div class="row row-cols-xl-4 row-cols-1 row-cols-md-2 g-0">
