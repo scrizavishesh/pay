@@ -23,7 +23,7 @@ const CreateUser = () => {
     const [upiValidError, setUpiValidError] = useState(false);
     const [upiIsRequiredError, setUpiIsRequiredError] = useState(false); // Corrected state variable name
 
-    const [selectedRole, setSelectedRole] = useState('agent');
+    const [selectedRole, setSelectedRole] = useState('admin');
     const [selectedRoleIsRequiredError, setSelectedRoleIsRequiredError] = useState(false);
 
     const handleUPI = (value) => {
@@ -173,8 +173,8 @@ const CreateUser = () => {
                             <h3 className="mb-0">Create User</h3> {/* Corrected class to className */}
                         </div>
                     </div>
+                    <hr />
                 </div>
-                <hr />
                 <div className="row"> {/* Corrected class to className */}
                     <div className="col-12">
                         <div className="mb-4">
@@ -251,7 +251,7 @@ const CreateUser = () => {
                                             <input type="text" onChange={(e) => handleUPI(e.target.value)} value={upi} className="form-control" placeholder="upi id" required="" />
                                         </div>
                                     </div>
-                                    <div className="mt-3">
+                                    {/* <div className="mt-3">
                                         <label className="form-label">Role & Permission*</label>
                                         <select onChange={(e) => handleRoleChange(e.target.value)} value={selectedRole} class="form-select">
                                             <option>-----Select Role-----</option>
@@ -263,8 +263,41 @@ const CreateUser = () => {
                                                 Select Role is required
                                             </div>
                                         )}
+                                    </div> */}
+                                    <div className="mb-3 mt-3">
+                                        <label className="form-label" id="productSKU">Role & Permission*</label><br />
+                                        <div className="form-check form-check-inline">
+                                            <input
+                                                className="form-check-input"
+                                                type="radio"
+                                                name="role"
+                                                id="inlineRadio1"
+                                                value="admin"
+                                                checked={selectedRole === "admin"}
+                                                onChange={() => handleRoleChange("admin")}
+                                            />
+                                            <label className="form-check-label" htmlFor="inlineRadio1">Creator</label>
+                                        </div>
+                                        <div className="form-check form-check-inline">
+                                            <input
+                                                className="form-check-input"
+                                                type="radio"
+                                                name="role"
+                                                id="inlineRadio2"
+                                                value="agent"
+                                                checked={selectedRole === "agent"}
+                                                onChange={() => handleRoleChange("agent")}
+                                            />
+                                            <label className="form-check-label" htmlFor="inlineRadio2">Approval</label>
+                                        </div>
+                                        {selectedRoleIsRequiredError && (
+                                            <div className='text-start mt-2' style={{ color: "red", fontSize: "x-small" }}>
+                                                Select Role is required
+                                            </div>
+                                        )}
                                     </div>
-                                    <div className="d-grid mb-3 mt-3"> {/* Corrected class to className */}
+
+                                    <div className="d-flex justify-content-center mb-3 mt-3"> {/* Corrected class to className */}
                                         <a type='button' onClick={register} className="btn btn-primary">
                                             Create user
                                         </a>

@@ -77,7 +77,6 @@ const Download = () => {
     return (
         <>
             <div class="container-fluid">
-
                 <div>
                     <div class="row">
                         <div class="col-12">
@@ -109,7 +108,7 @@ const Download = () => {
                                     <div className="mb-3">
                                         <label htmlFor="customerEmail" className="form-label">Select Agent *</label>
                                         <select onChange={(e) => handleAgent(e.target.value)} className="form-select" aria-label="Default select example">
-                                            <option defaultValue>Open this select menu</option>
+                                            <option defaultValue>Select Username</option>
                                             {showAgents?.length !== 0 ? (
                                                 showAgents.map((provider) => (
                                                     <option key={provider.id} value={provider.id}>{provider.username}</option>
@@ -146,7 +145,7 @@ const Download = () => {
                                         tableData.length !== 0 && (
                                             <>
                                                 <div className='d-flex justify-content-end mb-3'>
-                                                    <CSVLink className='btn btn-secondary' data={csvData} filename={"data.csv"}>
+                                                    <CSVLink className='btn btn-secondary' data={csvData} filename={"orders.csv"}>
                                                         Download CSV File
                                                     </CSVLink>
                                                 </div>
@@ -210,7 +209,7 @@ const Download = () => {
                                                                 </nav>
                                                             </div> */}
                                                         </div>
-                                                        <CSVLink className='btn btn-secondary' data={csvData} filename={"data.csv"}>
+                                                        <CSVLink className='btn btn-secondary' data={csvData} filename={"orders.csv"}>
                                                             Download CSV
                                                         </CSVLink>
                                                     </div>

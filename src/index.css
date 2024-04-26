@@ -226,6 +226,17 @@ h4 {
     transform: rotate(-180deg)
 }
 
+.boxEs {
+    border: 1px solid #DDDDEB;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F8FBFF 100%);
+    border-radius: 5px 0px 0px 0px;
+    /* border: 1px 0px 0px 0px; */
+    opacity: 0px;
+
+}
+
+
+
 /*!
  * Bootstrap  v5.3.0-alpha1 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
@@ -233,8 +244,8 @@ h4 {
  */
 :root,
 [data-bs-theme=light] {
-    /* --fastpay-blue: #008479; */
-    --fastpay-blue: #008479;
+    /* --fastpay-blue: #1961A3; */
+    --fastpay-blue: #1961A3;
     --fastpay-indigo: #1b968b;
     --fastpay-purple: #6f42c1;
     --fastpay-pink: #d63384;
@@ -258,7 +269,7 @@ h4 {
     --fastpay-gray-800: #1e293b;
     --fastpay-gray-900: #0f172a;
     --fastpay-gray-white: #fff;
-    --fastpay-primary: #008479;
+    --fastpay-primary: #1961A3;
     --fastpay-secondary: #475569;
     --fastpay-success: #198754;
     --fastpay-info: #0dcaf0;
@@ -322,7 +333,7 @@ h4 {
     --fastpay-body-bg: #f1f5f9;
     --fastpay-body-bg-rgb: 241, 245, 249;
     --fastpay-heading-color: var(--fastpay-headings-color);
-    --fastpay-link-color: #008479;
+    --fastpay-link-color: #1961A3;
     --fastpay-link-color-rgb: 98, 75, 255;
     --fastpay-link-decoration: none;
     --fastpay-link-hover-color: #4e3ccc;
@@ -4006,8 +4017,8 @@ textarea.form-control-lg {
 }
 
 .form-check-input:checked {
-    background-color: #008479;
-    border-color: #008479
+    background-color: #1961A3;
+    border-color: #1961A3
 }
 
 .form-check-input:checked[type=checkbox] {
@@ -4020,8 +4031,8 @@ textarea.form-control-lg {
 
 .form-check-input[type=checkbox]:indeterminate {
     --fastpay-form-check-bg-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3E%3C/svg%3E");
-    background-color: #008479;
-    border-color: #008479
+    background-color: #1961A3;
+    border-color: #1961A3
 }
 
 .form-check-input:disabled {
@@ -4126,7 +4137,7 @@ textarea.form-control-lg {
 .form-range::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    background-color: #008479;
+    background-color: #1961A3;
     border: 0;
     border-radius: 1rem;
     height: 1rem;
@@ -4160,7 +4171,7 @@ textarea.form-control-lg {
 .form-range::-moz-range-thumb {
     -moz-appearance: none;
     appearance: none;
-    background-color: #008479;
+    background-color: #1961A3;
     border: 0;
     border-radius: 1rem;
     height: 1rem;
@@ -4745,8 +4756,8 @@ fieldset:disabled .btn {
 
 .btn-primary {
     --fastpay-btn-color: #fff;
-    --fastpay-btn-bg: #008479;
-    --fastpay-btn-border-color: #008479;
+    --fastpay-btn-bg: #1961A3;
+    --fastpay-btn-border-color: #1961A3;
     --fastpay-btn-hover-color: #fff;
     --fastpay-btn-hover-bg: #5340d9;
     --fastpay-btn-hover-border-color: #4e3ccc;
@@ -4756,8 +4767,8 @@ fieldset:disabled .btn {
     --fastpay-btn-active-border-color: #4a38bf;
     --fastpay-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
     --fastpay-btn-disabled-color: #fff;
-    --fastpay-btn-disabled-bg: #008479;
-    --fastpay-btn-disabled-border-color: #008479
+    --fastpay-btn-disabled-bg: #1961A3;
+    --fastpay-btn-disabled-border-color: #1961A3
 }
 
 .btn-secondary {
@@ -4897,19 +4908,19 @@ fieldset:disabled .btn {
 }
 
 .btn-outline-primary {
-    --fastpay-btn-color: #008479;
-    --fastpay-btn-border-color: #008479;
+    --fastpay-btn-color: #1961A3;
+    --fastpay-btn-border-color: #1961A3;
     --fastpay-btn-hover-color: #fff;
-    --fastpay-btn-hover-bg: #008479;
-    --fastpay-btn-hover-border-color: #008479;
+    --fastpay-btn-hover-bg: #1961A3;
+    --fastpay-btn-hover-border-color: #1961A3;
     --fastpay-btn-focus-shadow-rgb: 98, 75, 255;
     --fastpay-btn-active-color: #fff;
-    --fastpay-btn-active-bg: #008479;
-    --fastpay-btn-active-border-color: #008479;
+    --fastpay-btn-active-bg: #1961A3;
+    --fastpay-btn-active-border-color: #1961A3;
     --fastpay-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-    --fastpay-btn-disabled-color: #008479;
+    --fastpay-btn-disabled-color: #1961A3;
     --fastpay-btn-disabled-bg: transparent;
-    --fastpay-btn-disabled-border-color: #008479;
+    --fastpay-btn-disabled-border-color: #1961A3;
     --fastpay-gradient: none
 }
 
@@ -5686,7 +5697,7 @@ fieldset:disabled .btn {
 .nav-pills {
     --fastpay-nav-pills-border-radius: 0.375rem;
     --fastpay-nav-pills-link-active-color: #fff;
-    --fastpay-nav-pills-link-active-bg: #008479
+    --fastpay-nav-pills-link-active-bg: #1961A3
 }
 
 .nav-pills .nav-link {
@@ -6644,8 +6655,8 @@ fieldset:disabled .btn {
     --fastpay-pagination-focus-bg: var(--fastpay-primary);
     --fastpay-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(98, 75, 255, .25);
     --fastpay-pagination-active-color: #fff;
-    --fastpay-pagination-active-bg: #008479;
-    --fastpay-pagination-active-border-color: #008479;
+    --fastpay-pagination-active-bg: #1961A3;
+    --fastpay-pagination-active-border-color: #1961A3;
     --fastpay-pagination-disabled-color: var(--fastpay-gray-500);
     --fastpay-pagination-disabled-bg: var(--fastpay-gray-300);
     --fastpay-pagination-disabled-border-color: var(--fastpay-gray-300);
@@ -6862,7 +6873,7 @@ fieldset:disabled .btn {
     --fastpay-progress-border-radius: var(--fastpay-border-radius);
     --fastpay-progress-box-shadow: var(--fastpay-box-shadow-inset);
     --fastpay-progress-bar-color: #fff;
-    --fastpay-progress-bar-bg: #008479;
+    --fastpay-progress-bar-bg: #1961A3;
     --fastpay-progress-bar-transition: width 0.6s ease;
     background-color: var(--fastpay-progress-bg);
     border-radius: var(--fastpay-progress-border-radius);
@@ -6929,8 +6940,8 @@ fieldset:disabled .btn {
     --fastpay-list-group-disabled-color: var(--fastpay-secondary-color);
     --fastpay-list-group-disabled-bg: var(--fastpay-card-bg);
     --fastpay-list-group-active-color: #fff;
-    --fastpay-list-group-active-bg: #008479;
-    --fastpay-list-group-active-border-color: #008479;
+    --fastpay-list-group-active-bg: #1961A3;
+    --fastpay-list-group-active-border-color: #1961A3;
     border-radius: var(--fastpay-list-group-border-radius);
     display: flex;
     flex-direction: column;
@@ -9128,7 +9139,7 @@ fieldset:disabled .btn {
 }
 
 .link-primary {
-    color: #008479 !important
+    color: #1961A3 !important
 }
 
 .link-primary:focus,
@@ -12985,7 +12996,7 @@ fieldset:disabled .btn {
 
 .bg-primary {
     --fastpay-bg-opacity: 1;
-    background-color: #008479 !important
+    background-color: #1961A3 !important
 }
 
 .bg-secondary {
@@ -28461,7 +28472,7 @@ fieldset:disabled .btn {
     --fastpay-gray-700: #cbd5e1;
     --fastpay-gray-800: #e2e8f0;
     --fastpay-gray-900: #f1f5f9;
-    --fastpay-primary: #008479;
+    --fastpay-primary: #1961A3;
     --fastpay-secondary: #475569;
     --fastpay-success: #198754;
     --fastpay-info: #0dcaf0;
@@ -28497,8 +28508,8 @@ fieldset:disabled .btn {
 
 [data-theme=dark] .btn-primary {
     --fastpay-btn-color: #fff;
-    --fastpay-btn-bg: #008479;
-    --fastpay-btn-border-color: #008479;
+    --fastpay-btn-bg: #1961A3;
+    --fastpay-btn-border-color: #1961A3;
     --fastpay-btn-hover-color: #fff;
     --fastpay-btn-hover-bg: #5340d9;
     --fastpay-btn-hover-border-color: #4e3ccc;
@@ -28508,8 +28519,8 @@ fieldset:disabled .btn {
     --fastpay-btn-active-border-color: #4a38bf;
     --fastpay-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
     --fastpay-btn-disabled-color: #fff;
-    --fastpay-btn-disabled-bg: #008479;
-    --fastpay-btn-disabled-border-color: #008479
+    --fastpay-btn-disabled-bg: #1961A3;
+    --fastpay-btn-disabled-border-color: #1961A3
 }
 
 [data-theme=dark] .btn-secondary {
@@ -28649,11 +28660,11 @@ fieldset:disabled .btn {
 }
 
 [data-theme=dark] .bg-primary {
-    background-color: #008479 !important
+    background-color: #1961A3 !important
 }
 
 [data-theme=dark] .text-primary {
-    color: #008479 !important
+    color: #1961A3 !important
 }
 
 [data-theme=dark] .bg-secondary {
@@ -29814,7 +29825,7 @@ a {
 }
 
 .avatar-primary .avatar-initials {
-    background-color: #008479;
+    background-color: #1961A3;
     color: var(--fastpay-white)
 }
 
@@ -29940,8 +29951,8 @@ a {
 }
 
 .btn-dashed:hover {
-    border-color: #008479 !important;
-    color: #008479 !important
+    border-color: #1961A3 !important;
+    color: #1961A3 !important
 }
 
 .btn-dashed:focus {
@@ -29986,7 +29997,7 @@ a {
 
 .btn-primary-soft {
     background-color: rgba(98, 75, 255, .1);
-    color: #008479
+    color: #1961A3
 }
 
 .btn-primary-soft:hover {
@@ -30377,7 +30388,7 @@ input::-webkit-outer-spin-button {
 
 .badge-primary-soft {
     background-color: rgba(98, 75, 255, .1);
-    color: #008479
+    color: #1961A3
 }
 
 .badge-secondary-soft {
@@ -34900,7 +34911,7 @@ span.flatpickr-weekday {
 }
 
 .choices[data-type*=select-one] .choices__button:focus {
-    box-shadow: 0 0 0 2px #008479
+    box-shadow: 0 0 0 2px #1961A3
 }
 
 .choices[data-type*=select-one] .choices__item[data-value=""] .choices__button {
@@ -35019,7 +35030,7 @@ span.flatpickr-weekday {
 }
 
 .choices__list--multiple .choices__item {
-    background-color: #008479;
+    background-color: #1961A3;
     border: 1px solid #4c32ff;
     border-radius: 20px;
     box-sizing: border-box;
