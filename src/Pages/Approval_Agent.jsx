@@ -6,7 +6,7 @@ import { Button, Modal } from 'react-bootstrap';
 
 
 const Approval_Agent = () => {
-    const profile = JSON.parse(localStorage.getItem("data"));
+    // const profile = JSON.parse(localStorage.getItem("data"));
 
 
     const [showModal, setShowModal] = useState(false);

@@ -34,7 +34,7 @@ const Manual_Order = () => {
     };
 
 
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     const [orderCreate, setCreateOrder] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -97,7 +97,7 @@ const Manual_Order = () => {
 
     const fetchData = async () => {
         try {
-            const orderResponse = await getAllOrders(searchTerm, currentPage, activeButton, startDate, endDate);
+            const orderResponse = await getAllOrders(searchTerm, currentPage, activeButton, startDate, endDate, agent);
             console.log(orderResponse)
             if (orderResponse?.status === 200 && orderResponse?.data?.results)
                 setCreateOrder(orderResponse?.data.results);

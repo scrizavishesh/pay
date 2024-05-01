@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { LoginSuccess, Loginuse } from '../utils/Constants';
 import toast from 'react-hot-toast';
+import { encryptData } from '../utils/Encrypt_data';
 
 const Login = () => {
     const token = localStorage.getItem("token");
@@ -61,12 +62,13 @@ const Login = () => {
 
     const userSuccess = async (tokenData) => {
         try {
-            const response = await LoginSuccess(tokenData);
+            const response = await LoginSuccess(tokenData)
             // console.log(response, "Login Success response");
             if (response?.status === 200) {
                 setSuccessLogin(response?.data?.users);
+                const encryptedUserData = encryptData(response?.data?.users);
                 localStorage.setItem(
-                    `data`, JSON.stringify(response?.data?.users)
+                    `data`, encryptedUserData
                 );
                 localStorage.setItem(
                     `role`, JSON.stringify(response?.data?.role)

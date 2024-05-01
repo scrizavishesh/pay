@@ -6,18 +6,33 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Layouts/Sidebar'
 import PageRouter from '../MainRoute/PageRouter';
 import { CheckInAgent, CheckOutAgent } from '../utils/Constants';
+import { decryptData } from '../utils/Encrypt_data';
 
 const Index = () => {
     const navigate = useNavigate();
-
     const [agent, setRole] = useState();
 
-    useEffect(() => {
-        const profile = JSON.parse(localStorage.getItem("data"));
-        setRole(profile[0].is_agent);
-    }, []);
+    // useEffect(() => {
+    //     const profile = localStorage.getItem('data');
+    //     const encryptedUserData = localStorage.getItem('data');
+    //     // const profile = JSON.parse(localStorage.getItem("data"));
+    //     setRole(profile[0].is_agent);
+    //     console.log(profile);
+    // }, []);
 
-    const profile = JSON.parse(localStorage.getItem("data"));
+    useEffect(() => {
+        // Retrieve encrypted data from local storage
+        const encryptedUserData = localStorage.getItem('data');
+        if (encryptedUserData) {
+          const profile = decryptData(encryptedUserData);
+          setRole(profile[0].is_agent);
+          console.log(profile);
+        }
+      }, []);
+
+    // const profile = JSON.parse(localStorage.getItem("data"));
+    const encryptedUserData = localStorage.getItem('data');
+    const profile = decryptData(encryptedUserData);
     const checked = localStorage.getItem("checked");
 
     useEffect(() => {
@@ -122,7 +137,7 @@ const Index = () => {
 
                             </div>
                             {/* <!--Navbar nav --> */}
-                            <ul class="navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">
+                            <ul class="d-none d-md-none d-lg-block navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">
                                 <li class="dropdown stopevent ms-2">
                                 </li>
                                 {/* <!-- List --> */}

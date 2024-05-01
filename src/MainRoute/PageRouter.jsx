@@ -15,6 +15,7 @@ import CreateSubCreator from '../Pages/CreateSubCreator';
 import SubCreatorList from '../Pages/SubCreatorList';
 import ResetCreatorPassword from '../Pages/ResetCreatorPassword';
 import Update_Sub_Creator from '../Pages/Update_Sub_Creator';
+import { decryptData } from '../utils/Encrypt_data';
 
 const Container = styled.div`
   /* styles */
@@ -25,7 +26,8 @@ const PageRouter = () => {
   const [superAdmin, setSuperAdmin] = useState();
 
   useEffect(() => {
-    const profile = JSON.parse(localStorage.getItem("data"));
+    const encryptedUserData = localStorage.getItem('data');
+    const profile = decryptData(encryptedUserData);
     if (profile && profile.length > 0) {
       setRole(profile[0].is_agent);
       setSuperAdmin(profile[0].is_superadmin);

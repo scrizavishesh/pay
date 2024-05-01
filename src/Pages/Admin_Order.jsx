@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import ReactPaginate from 'react-js-pagination';
 
 const Admin_Order = () => {
-    const profile = JSON.parse(localStorage.getItem("data"));
+    // const profile = JSON.parse(localStorage.getItem("data"));
     const [orderCreate, setCreateOrder] = useState([]);
     const [showAgents, setShowAgents] = useState([]);
     const [type, setType] = useState('');

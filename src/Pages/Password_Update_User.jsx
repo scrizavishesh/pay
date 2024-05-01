@@ -3,10 +3,13 @@ import { CreateUsers, UpdatesUsers } from '../utils/Constants'; // Corrected imp
 import { FaEyeSlash, FaEye } from "react-icons/fa";
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import {decryptData} from '../utils/Encrypt_data'
 
 const UpdateUser = () => {
 
-    const profile = JSON.parse(localStorage.getItem("data"));
+    // const profile = JSON.parse(localStorage.getItem("data"));
+    const encryptedUserData = localStorage.getItem('data');
+    const profile = decryptData(encryptedUserData);
  
 
 

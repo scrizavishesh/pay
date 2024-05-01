@@ -37,9 +37,9 @@ export const createOrder = async (requestData) => {
   }
 }
 
-export const getAllOrders = async (searchData, pageNo, day, startDate, endDate) => {
+export const getAllOrders = async (searchData, pageNo, day, startDate, endDate, agent) => {
   axios.defaults.headers.common["Authorization"] = bearerToken;
-  var response = await axios.get(`${API_URL}/api/orders/?page=${pageNo}&search=${searchData}&date_filter=${day}&start_date=${startDate}&end_date=${endDate}&agent_id=2`, );
+  var response = await axios.get(`${API_URL}/api/orders/?page=${pageNo}&search=${searchData}&date_filter=${day}&start_date=${startDate}&end_date=${endDate}&agent_id=${agent}`, );
   if (response) {
     return response;
   } else {
