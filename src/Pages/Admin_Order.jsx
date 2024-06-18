@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createOrder, getAgents, getAgentsfor, getAllOrders } from '../utils/Constants';
+import { createOrder, getAgents, getAgentsfor, getAllForAdmin, getAllOrders } from '../utils/Constants';
 import toast from 'react-hot-toast';
 import ReactPaginate from 'react-js-pagination';
 
@@ -13,12 +13,18 @@ const Admin_Order = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
+    const [activeButton, setActiveButton] = useState("custom");
     const [page, setPage] = useState("")
+    // const [agent, setAgent] = useState('');
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
     };
 
+
+ 
 
     const handleType = (value) => setType(value);
     const handleAgent = (value) => setAgent(value);
@@ -32,7 +38,7 @@ const Admin_Order = () => {
             try {
                 const response = await createOrder(formData);
                 if (response?.status === 201) {
-                    window.location.reload();
+                    // window.location.reload();
                 }
             } catch (err) {
                 console.log(err);
@@ -47,8 +53,8 @@ const Admin_Order = () => {
 
     const fetchData = async () => {
         try {
-            const orderResponse = await getAllOrders(searchTerm, currentPage);
-            console.log(orderResponse, "Orderresponse")
+            const orderResponse = await getAllForAdmin(searchTerm, currentPage);
+            // console.log(orderResponse, "Orderresponse")
             if (orderResponse?.status === 200) {
                 setCreateOrder(orderResponse?.data?.results);
                 setTotalItems(orderResponse?.data?.count);
@@ -56,7 +62,7 @@ const Admin_Order = () => {
             }
 
             const agentsResponse = await getAgentsfor();
-            console.log(agentsResponse, "online Agent")
+            // console.log(agentsResponse, "online Agent")
             if (agentsResponse?.status === 200) setShowAgents(agentsResponse.data);
         } catch (err) {
             console.log(err);

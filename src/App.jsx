@@ -10,7 +10,9 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <>
         <Route path="/create_fund/:order_id/:receipt/:agent" element={<Create_Fund />} />
+        </>
       </Routes>
       {
         token ?

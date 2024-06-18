@@ -26,7 +26,7 @@ const Index = () => {
         if (encryptedUserData) {
           const profile = decryptData(encryptedUserData);
           setRole(profile[0].is_agent);
-          console.log(profile);
+        //   console.log(profile);
         }
       }, []);
 
@@ -51,7 +51,7 @@ const Index = () => {
 
         try {
             const response = await CheckInAgent();
-            console.log(response, "Check In");
+            // console.log(response, "Check In");
             if (response?.status === 200) {
                 toast.success("Checked In Successfully");
                 localStorage.setItem("checked", response?.data?.status)
@@ -65,7 +65,7 @@ const Index = () => {
     const CheckOut = async () => {
         try {
             const response = await CheckOutAgent();
-            console.log(response, "Check out");
+            // console.log(response, "Check out");
             if (response?.status === 200) {
                 toast.success("Checked Out Successfully");
                 localStorage.removeItem("checked")

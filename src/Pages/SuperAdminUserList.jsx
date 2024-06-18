@@ -8,26 +8,6 @@ import { DownloadUserList, getAgents } from '../utils/Constants';
 import ReactPaginate from 'react-js-pagination';
 import { CSVLink } from 'react-csv';
 
-const StyledContainer = styled.div`
-  .btn-outline-primary {
-    background-color: #f4f4f4;
-    --scriza-btn-color: #212b36;
-    --scriza-btn-border-color: #cccccc;
-    --scriza-btn-hover-color: #008479;
-  }
-
-  .btn {
-    --scriza-btn-padding-x: 0.7rem;
-    --scriza-btn-padding-y: 0.565rem;
-    font-family: 'Open Sans', sans-serif;
-    --scriza-btn-font-size: 13px;
-    --scriza-btn-font-weight: 500;
-    border-radius: 0.1rem;
-
-  }
-`;
-
-
 
 const SuperAdminUserList = () => {
 
@@ -74,7 +54,7 @@ const SuperAdminUserList = () => {
     const Download_Slip = async () => {
         try {
             const response = await DownloadUserList();
-            console.log(response, "user List");
+            console.log(response, "user List Download");
             if (response?.status === 200) {
                 const rows = response?.data?.split('\n').map(row => row.split(','));
                 setCsvData(rows);

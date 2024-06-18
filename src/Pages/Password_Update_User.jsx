@@ -1,13 +1,11 @@
-import React, { useState,useEffect } from 'react'; // Imported useState only as it's used in the component
-import { CreateUsers, UpdatesUsers } from '../utils/Constants'; // Corrected import statement
-import { FaEyeSlash, FaEye } from "react-icons/fa";
+import React, { useState,useEffect } from 'react'; 
+import { CreateUsers, UpdatesUsers } from '../utils/Constants';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import {decryptData} from '../utils/Encrypt_data'
 
 const UpdateUser = () => {
 
-    // const profile = JSON.parse(localStorage.getItem("data"));
     const encryptedUserData = localStorage.getItem('data');
     const profile = decryptData(encryptedUserData);
  
@@ -15,24 +13,24 @@ const UpdateUser = () => {
 
     const [upi, setUpi] = useState("");
     const [upiValidError, setUpiValidError] = useState(false);
-    const [upiIsRequiredError, setUpiIsRequiredError] = useState(false); // Corrected state variable name
+    const [upiIsRequiredError, setUpiIsRequiredError] = useState(false); 
 
     useEffect(() => {
         setUpi(profile[0]?.upi_id);
     }, [])
 
     const handleUPI = (value) => {
-        setUpi(value); // Corrected state variable name
+        setUpi(value); 
         const upiRegex = /^([a-zA-Z0-9._-]+)@([a-zA-Z0-9.-]+)\.([a-zA-Z]{2,})$/;
         if (value === "") {
             setUpiValidError(false);
-            setUpiIsRequiredError(true); // Corrected state variable name
+            setUpiIsRequiredError(true); 
         } else if (upiRegex.test(value) === false) {
             setUpiValidError(true);
-            setUpiIsRequiredError(false); // Corrected state variable name
+            setUpiIsRequiredError(false); 
         } else {
             setUpiValidError(false);
-            setUpiIsRequiredError(false); // Corrected state variable name
+            setUpiIsRequiredError(false); 
         }
     };
 

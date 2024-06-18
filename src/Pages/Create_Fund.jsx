@@ -22,7 +22,7 @@ const Create_Fund = () => {
         formData.append('payment_amount', amount);
         try {
             const response = await createFund(formData, order_id, receipt, agent);
-            console.log(response, "create fund")
+            // console.log(response, "create fund")
             if (response?.status === 200) {
                 setActive(true);
                 setScannerData(response?.data);

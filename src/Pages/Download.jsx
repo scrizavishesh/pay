@@ -3,9 +3,18 @@ import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
 import { DownloadOrders, getAgents } from '../utils/Constants';
 import { Document, Page, pdfjs } from 'react-pdf';
+import styled from 'styled-components';
+
 import { CSVLink } from 'react-csv';
-import PdfViewer from './PdfViewer';
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+
+const StyledContainer = styled.div`
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    color: #fff;
+}
+
+`
 
 
 const Download = () => {
@@ -75,7 +84,7 @@ const Download = () => {
     }, []);
 
     return (
-        <>
+        <StyledContainer>
             <div class="container-fluid">
                 <div>
                     <div class="row">
@@ -223,7 +232,7 @@ const Download = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </StyledContainer>
     )
 }
 
