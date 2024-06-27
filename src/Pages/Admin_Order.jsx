@@ -38,7 +38,7 @@ const Admin_Order = () => {
             try {
                 const response = await createOrder(formData);
                 if (response?.status === 201) {
-                    // window.location.reload();
+                    window.location.reload();
                 }
             } catch (err) {
                 console.log(err);
