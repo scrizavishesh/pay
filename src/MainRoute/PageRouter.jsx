@@ -26,8 +26,8 @@ const PageRouter = () => {
   const [superAdmin, setSuperAdmin] = useState();
 
   useEffect(() => {
-    const encryptedUserData = localStorage.getItem('data');
-    const profile = decryptData(encryptedUserData);
+    const profile = JSON.parse(localStorage.getItem('data'));
+    // const profile = decryptData(encryptedUserData);
     if (profile && profile.length > 0) {
       setRole(profile[0].is_agent);
       setSuperAdmin(profile[0].is_superadmin);

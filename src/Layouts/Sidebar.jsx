@@ -219,14 +219,14 @@ const Sidebar = () => {
 
     const [activeLink, setActiveLink] = useState('');
 
-
     const [role, setRole] = useState();
     const [updateRole, setUpdateRole] = useState();
     const [superAdmin, setSuperAdmin] = useState();
 
     useEffect(() => {
-        const encryptedUserData = localStorage.getItem('data');
-        const profile = decryptData(encryptedUserData);
+        const profile = JSON.parse(localStorage.getItem('data'));
+        // const profile = decryptData(encryptedUserData);
+        // console.log(profile, "Profile");
         setRole(profile[0].is_admin);
         setUpdateRole(profile[0].is_agent);
         setSuperAdmin(profile[0].is_superadmin);

@@ -54,7 +54,7 @@ const SuperAdminUserList = () => {
     const Download_Slip = async () => {
         try {
             const response = await DownloadUserList();
-            console.log(response, "user List Download");
+            // console.log(response, "user List Download");
             if (response?.status === 200) {
                 const rows = response?.data?.split('\n').map(row => row.split(','));
                 setCsvData(rows);

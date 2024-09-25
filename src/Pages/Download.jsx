@@ -2,11 +2,34 @@ import React, { useState, useEffect } from 'react';
 import Flatpickr from 'react-flatpickr';
 import 'flatpickr/dist/themes/material_blue.css';
 import { DownloadOrders, getAgents } from '../utils/Constants';
-import { Document, Page, pdfjs } from 'react-pdf';
+
 import styled from 'styled-components';
 
 import { CSVLink } from 'react-csv';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+    import { Document, Page, pdfjs } from 'react-pdf';
+    // const [pdfBase64, setPdfBase64] = useState(null);
+    // const [numPages, setNumPages] = useState(null);
+    // const [pageNumber, setPageNumber] = useState(1);
+    // const onDocumentLoadSuccess = ({ numPages }) => {
+    //     setNumPages(numPages);
+    // };
+
+    /* <div>
+                                        <h1>PDF Viewer</h1>
+                                        {pdfBase64 && (
+                                            <div>
+                                                <Document
+                                                    file={{ data: pdfBase64 }}
+                                                    onLoadSuccess={onDocumentLoadSuccess}
+                                                >
+                                                    <Page pageNumber={pageNumber} />
+                                                </Document>
+                                                <p>Page {pageNumber} of {numPages}</p>
+                                            </div>
+                                        )}
+                                        {!pdfBase64 && <p>Loading PDF...</p>}
+                                    </div> */
 
 
 const StyledContainer = styled.div`
@@ -25,11 +48,10 @@ const Download = () => {
     const [agent, setAgent] = useState('');
     const [csvData, setCsvData] = useState([]);
     const [tableData, setTableData] = useState([]);
-    console.log(tableData)
-    // const [pdfBase64, setPdfBase64] = useState(null);
+    // console.log(tableData)
+
     const [currentpage, setcurrentpage] = useState('')
-    // const [numPages, setNumPages] = useState(null);
-    // const [pageNumber, setPageNumber] = useState(1);
+
 
 
     const handleAgent = (value) => setAgent(value);
@@ -45,7 +67,6 @@ const Download = () => {
         const year = date.getFullYear();
         const month = date.getMonth() + 1; // Month is 0-indexed
         const day = date.getDate();
-
         return `${year}-${month}-${day}`;
     };
 
@@ -54,11 +75,10 @@ const Download = () => {
         if (agent) {
             try {
                 const response = await DownloadOrders(startDate, endDate, agent);
-                console.log(response);
+                // console.log(response);
                 if (response?.status === 200) {
                     const rows = response?.data?.split('\n').map(row => row.split(','));
                     setCsvData(rows);
-                    // Set table data by skipping the header row
                     setTableData(rows.slice(1));
                 }
             } catch (err) {
@@ -67,9 +87,6 @@ const Download = () => {
         }
     };
 
-    // const onDocumentLoadSuccess = ({ numPages }) => {
-    //     setNumPages(numPages);
-    // };
 
     useEffect(() => {
         const fetchData = async () => {

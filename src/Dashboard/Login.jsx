@@ -66,9 +66,9 @@ const Login = () => {
             // console.log(response, "Login Success response");
             if (response?.status === 200) {
                 setSuccessLogin(response?.data?.users);
-                const encryptedUserData = encryptData(response?.data?.users);
+                // const encryptedUserData = (response?.data?.users);
                 localStorage.setItem(
-                    `data`, encryptedUserData
+                    `data`, JSON.stringify(response?.data?.users)
                 );
                 localStorage.setItem(
                     `role`, JSON.stringify(response?.data?.role)
@@ -135,7 +135,7 @@ const Login = () => {
                                     {/* <!-- Username --> */}
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Username or email</label>
-                                        <input onChange={(e) => handleUserName(e.target.value)} maxLength="10" type="text" class="form-control" name="email" placeholder="Email username here" required="" />
+                                        <input onChange={(e) => handleUserName(e.target.value)} maxLength="30" type="text" class="form-control" name="email" placeholder="Email username here" required="" />
                                         {userNameIsRequiredError && (
                                             <div className='text-start p-2' style={{ color: "red", fontSize: "x-small" }}>
                                                 Username is required

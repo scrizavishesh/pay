@@ -6,8 +6,8 @@ import {decryptData} from '../utils/Encrypt_data'
 
 const UpdateUser = () => {
 
-    const encryptedUserData = localStorage.getItem('data');
-    const profile = decryptData(encryptedUserData);
+    const profile = localStorage.getItem('data');
+    // const profile = decryptData(encryptedUserData);
  
 
 

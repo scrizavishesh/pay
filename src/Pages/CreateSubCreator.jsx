@@ -130,7 +130,7 @@ const CreateSubCreator = () => {
 
             try {
                 const response = await CreateUsers(data);
-                console.log(response, "sub Creator")
+                // console.log(response, "sub Creator")
                 if (response.status === 201) {
                     navigate('/sub_creator_list')
                     setEmail("");

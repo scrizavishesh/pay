@@ -33,7 +33,7 @@ const Update_user = () => {
 
     const getEmployess = async () => {
         const response = await getAgentsById(ids?.id);
-        console.log(response, "response")
+        // console.log(response, "response")
         try {
             if (response?.status === 200) {
                 setUserDetails(response?.data)
@@ -126,7 +126,7 @@ const Update_user = () => {
             formData.append("upi_id", upi);
             try {
                 const response = await UpdatesUsers(formData, ids?.id);
-                console.log(response, "updateregister")
+                // console.log(response, "updateregister")
                 if (response.status === 200) {
                     setEmail("");
                     setUsername("");

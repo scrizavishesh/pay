@@ -22,17 +22,13 @@ const Index = () => {
 
     useEffect(() => {
         // Retrieve encrypted data from local storage
-        const encryptedUserData = localStorage.getItem('data');
-        if (encryptedUserData) {
-          const profile = decryptData(encryptedUserData);
+        const profile = JSON.parse(localStorage.getItem('data'));
+        if (profile) {
           setRole(profile[0].is_agent);
-        //   console.log(profile);
         }
       }, []);
 
-    // const profile = JSON.parse(localStorage.getItem("data"));
-    const encryptedUserData = localStorage.getItem('data');
-    const profile = decryptData(encryptedUserData);
+  
     const checked = localStorage.getItem("checked");
 
     useEffect(() => {
@@ -42,7 +38,7 @@ const Index = () => {
       
     }, [])
     
-
+    const profile = JSON.parse(localStorage.getItem('data'));
 
     const [isChecked, setIsChecked] = useState(false); 
 

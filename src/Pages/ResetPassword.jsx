@@ -64,7 +64,7 @@ const ResetPassword = () => {
             // formData.append("password_confirmation", confirmPassword);
             try {
                 const response = await UpdatesUsers(formData, ids?.id);
-                console.log(response, "Reseat password")
+                // console.log(response, "Reseat password")
                 if (response.status === 200) {
                     toast.success("User Password Reset Successfully");
                     navigate("/userlist")

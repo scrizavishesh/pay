@@ -83,7 +83,7 @@ const Manual_Order = () => {
         if (agent) {
             try {
                 const response = await DownloadOrders(startDate, endDate, agent);
-                console.log(response, "download slip");
+                // console.log(response, "download slip");
                 if (response?.status === 200) {
                     const rows = response?.data?.split('\n').map(row => row.split(','));
                     setCsvData(rows);
@@ -98,7 +98,7 @@ const Manual_Order = () => {
     const fetchData = async () => {
         try {
             const orderResponse = await getAllOrders(searchTerm, currentPage, activeButton, startDate, endDate, agent);
-            console.log(orderResponse)
+            // console.log(orderResponse)
             if (orderResponse?.status === 200 && orderResponse?.data?.results)
                 setCreateOrder(orderResponse?.data.results);
             setTotalItems(orderResponse?.data?.count);
