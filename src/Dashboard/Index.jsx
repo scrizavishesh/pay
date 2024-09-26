@@ -24,23 +24,23 @@ const Index = () => {
         // Retrieve encrypted data from local storage
         const profile = JSON.parse(localStorage.getItem('data'));
         if (profile) {
-          setRole(profile[0].is_agent);
+            setRole(profile[0].is_agent);
         }
-      }, []);
+    }, []);
 
-  
+
     const checked = localStorage.getItem("checked");
 
     useEffect(() => {
-        if(checked === "checked_in"){
+        if (checked === "checked_in") {
             setIsChecked(true);
         }
-      
+
     }, [])
-    
+
     const profile = JSON.parse(localStorage.getItem('data'));
 
-    const [isChecked, setIsChecked] = useState(false); 
+    const [isChecked, setIsChecked] = useState(false);
 
 
     const CheckIn = async () => {
@@ -105,7 +105,7 @@ const Index = () => {
                             <a class="navbar-brand d-block d-md-none" href="/">
                                 <img src="/logo.png" alt="" width={150} />
                             </a>
-                            <a onClick={toggleSidebar} style={{borderRadius: "5px", border: "1px solid #FFFFFF33",padding: "4px", background: "#1961A3"}} class="ms-auto ms-md-0 me-0 me-lg-3 ">
+                            <a onClick={toggleSidebar} style={{ borderRadius: "5px", border: "1px solid #FFFFFF33", padding: "4px", background: "#1961A3" }} class="ms-auto ms-md-0 me-0 me-lg-3 ">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="#fff" class="bi bi-text-indent-left text-muted" viewBox="0 0 16 16">
                                     <path d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm.646 2.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L4.293 8 2.646 6.354a.5.5 0 0 1 0-.708zM7 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"></path>
                                 </svg>
@@ -124,7 +124,7 @@ const Index = () => {
                                                 checked={isChecked}
                                                 onChange={isChecked ? CheckOut : CheckIn} // Toggle function based on isChecked state
                                             />
-                                            <label className="form-check-label" htmlFor="flexSwitchStock" style={{color: "#fff"}}>
+                                            <label className="form-check-label" htmlFor="flexSwitchStock" style={{ color: "#fff" }}>
                                                 {isChecked ? 'Check In' : 'Chec Out'}
                                             </label>
                                         </div>
@@ -133,10 +133,7 @@ const Index = () => {
 
                             </div>
                             {/* <!--Navbar nav --> */}
-                            <ul class="d-none d-md-none d-lg-block navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">
-                                <li class="dropdown stopevent ms-2">
-                                </li>
-                                {/* <!-- List --> */}
+                            <ul class="navbar-nav navbar-right-wrap ms-lg-auto d-flex nav-top-wrap align-items-center ms-4 ms-lg-0">
                                 <li class="dropdown ms-2">
                                     <a class="rounded-circle d-flex gap-3" href="#!" role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <div class="avatar avatar-md avatar-indicators avatar-online">
@@ -149,12 +146,12 @@ const Index = () => {
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
                                         <ul class="list-unstyled">
                                             <li>
-                                                <a type='button' onClick={Logout} class="dropdown-item">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power me-2 icon-xxs dropdown-item-icon"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>Sign Out
+                                                <a class="dropdown-item" onClick={Logout} href="./index.html">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-power me-2 icon-xxs dropdown-item-icon"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                                                    Sign Out
                                                 </a>
                                             </li>
                                         </ul>
-
                                     </div>
                                 </li>
                             </ul>
@@ -162,7 +159,7 @@ const Index = () => {
                     </div>
                 </div>
                 <Sidebar />
-                <div id="app-content" style={{backgroundColor: "#fff"}}>
+                <div id="app-content" style={{ backgroundColor: "#fff" }}>
                     <div class="app-content-area" >
                         <PageRouter />
                     </div>
